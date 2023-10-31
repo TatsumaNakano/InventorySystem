@@ -64,6 +64,7 @@ public partial class InventorySystemContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BrokenFlag).HasColumnName("broken_flag");
             entity.Property(e => e.Capacity).HasColumnName("capacity");
+            entity.Property(e => e.CurrentUserId).HasColumnName("current_user_id");
             entity.Property(e => e.DeleteFlag).HasColumnName("delete_flag");
             entity.Property(e => e.DeviceId)
                 .HasMaxLength(6)
@@ -96,6 +97,10 @@ public partial class InventorySystemContext : DbContext
             entity.Property(e => e.UpdateDate)
                 .HasColumnType("datetime")
                 .HasColumnName("update_date");
+
+            entity.HasOne(d => d.CurrentUser).WithMany(p => p.Devices)
+                .HasForeignKey(d => d.CurrentUserId)
+                .HasConstraintName("FK_User");
 
             entity.HasOne(d => d.DeviceType).WithMany(p => p.Devices)
                 .HasForeignKey(d => d.DeviceTypeId)

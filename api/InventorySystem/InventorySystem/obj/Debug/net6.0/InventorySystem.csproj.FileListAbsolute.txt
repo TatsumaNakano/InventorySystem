@@ -85,3 +85,5 @@ C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\o
 C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\obj\Debug\net6.0\InventorySystem.pdb
 C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\obj\Debug\net6.0\InventorySystem.genruntimeconfig.cache
 C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\obj\Debug\net6.0\ref\InventorySystem.dll
+C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\nakan\Desktop\SUS\InventorySystem\api\InventorySystem\InventorySystem\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

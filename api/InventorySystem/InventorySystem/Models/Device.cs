@@ -41,6 +41,10 @@ public partial class Device
 
     public int? HasGpu { get; set; }
 
+    public int? CurrentUserId { get; set; }
+
+    public virtual User? CurrentUser { get; set; }
+
     public virtual DeviceType DeviceType { get; set; } = null!;
 
     public virtual ICollection<Lending> Lendings { get; set; } = new List<Lending>();

@@ -47,6 +47,8 @@ public partial class User
 
     public virtual Department Department { get; set; } = null!;
 
+    public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
+
     public virtual Gender? Gender { get; set; }
 
     public virtual ICollection<Lending> Lendings { get; set; } = new List<Lending>();
