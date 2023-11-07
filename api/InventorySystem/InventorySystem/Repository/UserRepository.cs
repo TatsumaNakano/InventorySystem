@@ -147,6 +147,7 @@ namespace InventorySystem.Repository
                 return
                     from != null ? e.RegistrationDate >= from : true &&
                     to != null ? e.RegistrationDate <= to : true;
+
             }
             return _context.Users
                 .Include(u => u.Lendings)
@@ -170,6 +171,7 @@ namespace InventorySystem.Repository
                 e.UserId.Contains(searchString) ||
                 Tool.KatakanaToAlphabet(e.KanaFirstName).Contains(searchString) ||
                 Tool.KatakanaToAlphabet(e.KanaLastName).Contains(searchString);
+
             }
 
             return _context.Users
