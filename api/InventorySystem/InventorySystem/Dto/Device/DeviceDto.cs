@@ -1,4 +1,5 @@
 ﻿using InventorySystem.Models;
+using System.Text.Json.Serialization;
 
 namespace InventorySystem.Dto
 {
@@ -44,7 +45,8 @@ namespace InventorySystem.Dto
 
         public virtual DeviceUserDto? CurrentUser { get; set; }
         public virtual DeviceTypeDto DeviceType { get; set; } = null!;
-        public virtual ICollection<DeviceLendingDto> Lendings { get; set; } = new List<DeviceLendingDto>();
+
+        public virtual ICollection<LendingDto> Lendings { get; set; } = new List<LendingDto>();
         public virtual DeviceMakerDto? Maker { get; set; }
         public virtual OperationSystemDto? Os { get; set; }
         public virtual StoragePlaceDto Place { get; set; } = null!;

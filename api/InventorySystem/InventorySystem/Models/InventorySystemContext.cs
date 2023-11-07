@@ -43,6 +43,7 @@ public partial class InventorySystemContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
         modelBuilder.Entity<Department>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Departme__3213E83FFCFB4022");

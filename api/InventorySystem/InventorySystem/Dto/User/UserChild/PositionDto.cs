@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace InventorySystem.Models;
 
-public partial class UserSexDto
+public partial class PositionDto
 {
     public int Id { get; set; }
 

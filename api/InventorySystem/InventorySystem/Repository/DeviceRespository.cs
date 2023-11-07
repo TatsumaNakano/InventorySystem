@@ -17,9 +17,9 @@ namespace InventorySystem.Repository
             return _context.Devices
                 .Include(d => d.CurrentUser)
                 .Include(d => d.DeviceType)
-                //.Include(d => d.Maker)
-                //.Include(d => d.Os)
-                //.Include(d => d.Place)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
                 .OrderBy(d => d.Id).ToList();
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace InventorySystem.Models;
 
-public class UserDepartmentDto
+public partial class DeviceMakerDto
 {
     public int Id { get; set; }
 
