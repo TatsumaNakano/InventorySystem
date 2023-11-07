@@ -25,9 +25,11 @@ namespace InventorySystem.Controllers
         [ProducesResponseType(200,Type = typeof(IEnumerable<Device>))]
         public IActionResult GetAllDevices()
         {
-            var devices = _mapper.Map<List<DeviceDto>>(_deviceRepository.GetAllDevices());
-            Console.WriteLine("ModelState.IsValid");
-            Console.WriteLine(ModelState.IsValid);
+            var d = _deviceRepository.GetAllDevices();
+            System.Diagnostics.Debug.WriteLine("------------------");
+            System.Diagnostics.Debug.WriteLine(d);
+            System.Diagnostics.Debug.WriteLine("------------------");
+            var devices = _mapper.Map<List<DeviceDto>>(d);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(devices);

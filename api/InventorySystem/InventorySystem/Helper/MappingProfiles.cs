@@ -10,7 +10,7 @@ namespace InventorySystem.Helper
         {
             CreateMap<Lending, LendingDto>();
             CreateMap<Device, DeviceDto>();
-            CreateMap<User, UserDto>();
+            CreateMap<User, DeviceUserDto>();
         }
     }
 }

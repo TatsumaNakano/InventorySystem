@@ -1,4 +1,6 @@
-﻿namespace InventorySystem.Dto
+﻿using InventorySystem.Models;
+
+namespace InventorySystem.Dto
 {
     public class UserDto
     {
@@ -41,5 +43,15 @@
         public DateTime UpdateDate { get; set; }
 
         public DateTime? LeftDate { get; set; }
+
+        public virtual UserDepartmentDto Department { get; set; } = null!;
+
+        public virtual UserGenderDto? Gender { get; set; }
+
+        public virtual ICollection<UserLendingDto> Lendings { get; set; } = new List<UserLendingDto>();
+
+        public virtual UserPositionDto Position { get; set; } = null!;
+
+        public virtual UserSexDto Sex { get; set; } = null!;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InventorySystem.Interfaces;
 using InventorySystem.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace InventorySystem.Repository
@@ -14,17 +15,30 @@ namespace InventorySystem.Repository
 
         public ICollection<Lending> GetCurrentLendings()
         {
-            return _context.Lendings.Where(e => e.DeleteFlag == 0).OrderBy(x => x.RentalEnd).ToList();
+            return _context.Lendings
+                .Include(l => l.User)
+                .Include(l => l.Device)
+                .Where(e => e.DeleteFlag == 0)
+                .OrderBy(x => x.RentalEnd)
+                .ToList();
         }
 
         public ICollection<Lending> GetDueLendings()
         {
-            return _context.Lendings.Where(e => e.RentalEnd <= DateTime.Today).OrderBy(x => x.RentalEnd).ToList();
+            return _context.Lendings
+                .Include(l => l.User)
+                .Include(l => l.Device)
+                .Where(e => e.RentalEnd <= DateTime.Today)
+                .OrderBy(x => x.RentalEnd)
+                .ToList();
         }
 
         public Lending GetLending(int id)
         {
-            return _context.Lendings.Where(e => e.Id == id).FirstOrDefault();
+            return _context.Lendings
+                .Include(l => l.User)
+                .Include(l => l.Device)
+                .Where(e => e.Id == id).FirstOrDefault();
         }
 
         public bool AddLending(Lending lending)

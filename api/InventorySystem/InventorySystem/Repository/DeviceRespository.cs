@@ -1,5 +1,6 @@
 ﻿using InventorySystem.Interfaces;
 using InventorySystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventorySystem.Repository
 {
@@ -13,31 +14,67 @@ namespace InventorySystem.Repository
 
         public ICollection<Device> GetAllDevices()
         {
-            return _context.Devices.OrderBy(d => d.Id).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                //.Include(d => d.Maker)
+                //.Include(d => d.Os)
+                //.Include(d => d.Place)
+                .OrderBy(d => d.Id).ToList();
         }
 
         public ICollection<Device> GetAvailableDevices()
         {
-            return _context.Devices.Where(e => e.CurrentUserId == null).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.CurrentUserId == null).ToList();
         }
 
         public ICollection<Device> GetBrokenDevices()
         {
-            return _context.Devices.Where(e => e.BrokenFlag == 1).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.BrokenFlag == 1).ToList();
         }
         public ICollection<Device> GetNotBrokenDevices()
         {
-            return _context.Devices.Where(e => e.BrokenFlag == 0).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.BrokenFlag == 0).ToList();
         }
 
         public Device GetDevice(int id)
         {
-            return _context.Devices.Where(e => e.Id == id).FirstOrDefault();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.Id == id).FirstOrDefault();
         }
 
         public Device GetDevice(string deviceId)
         {
-            return _context.Devices.Where(e => e.DeviceId == deviceId).FirstOrDefault();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.DeviceId == deviceId).FirstOrDefault();
         }
 
         public ICollection<Device> GetDevicesBySpec(int osId = -1, int memory = -1, int capacity = -1, int hasGpu = -1, int makerId = -1)
@@ -53,23 +90,47 @@ namespace InventorySystem.Repository
                     makerId != -1 ? e.MakerId == makerId : true;
             }
 
-            return _context.Devices.Where(evaluateSpec).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(evaluateSpec).ToList();
         }
 
         public ICollection<Device> GetDevicesByPlace(int placeId)
         {
-            return _context.Devices.Where(e => e.PlaceId == placeId).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.PlaceId == placeId).ToList();
         }
 
         public ICollection<Device> GetLeaseEndingDevices()
         {
             //リース期限１か月前のデバイス
-            return _context.Devices.Where(e => e.LeaseEndDate.AddDays(-30) >= (DateTime.Today)).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.LeaseEndDate.AddDays(-30) >= (DateTime.Today)).ToList();
         }
 
         public ICollection<Device> GetDevicesByType(int typeId)
         {
-            return _context.Devices.Where(e => e.DeviceTypeId == typeId).ToList();
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.DeviceTypeId == typeId).ToList();
         }
 
     }
