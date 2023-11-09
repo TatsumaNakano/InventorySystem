@@ -42,7 +42,7 @@ namespace InventorySystem.Controllers
             return Ok(user);
         }
 
-        [HttpGet("userId/{userId}")]
+        [HttpGet("userId&{userId}")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         public IActionResult GetUser(string userId)
@@ -154,6 +154,35 @@ namespace InventorySystem.Controllers
 
             return Ok(user);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateUser([FromBody] UserEditDto user)
+        {
+
+            if (user == null) return BadRequest(ModelState);
+
+            if (_userRepository.UserExist(user.UserId))
+            {
+                ModelState.AddModelError("", "この社員番号を使ったユーザーはすでに存在します。");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var mappedUser = _mapper.Map<User>(user);
+
+            if (!_userRepository.AddUser(mappedUser))
+            {
+                ModelState.AddModelError("","予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("ユーザー作成完了");
+        }
+
 
 
     }

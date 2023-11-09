@@ -175,6 +175,7 @@ public partial class InventorySystemContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DeleteFlag).HasColumnName("delete_flag");
             entity.Property(e => e.DeviceId).HasColumnName("device_id");
+            entity.Property(e => e.Remarks).HasColumnName("remarks");
             entity.Property(e => e.RentalEnd)
                 .HasColumnType("datetime")
                 .HasColumnName("rental_end");

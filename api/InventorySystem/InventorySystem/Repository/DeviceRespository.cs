@@ -132,6 +132,46 @@ namespace InventorySystem.Repository
                 .Include(d => d.Place)
                 .Where(e => e.DeviceTypeId == typeId).ToList();
         }
+        public bool DeviceExist(int id)
+        {
+            return _context.Devices.Any(d => d.Id == id);
+        }
+        public bool DeviceExist(string deviceid)
+        {
+            return _context.Devices.Any(d => d.DeviceId == deviceid);
+        }
 
+        public bool AddDevice(Device device)
+        {
+            //デバイスのIDを生成
+            var deviceTypeRepository = new DeviceTypeRepository(_context);
+            string devicePrefix = deviceTypeRepository.GetDevicePrefix(device.DeviceTypeId);
+            int nextVersion = deviceTypeRepository.GetNextVersion(device.DeviceTypeId);
+            device.DeviceId = devicePrefix + nextVersion.ToString("0000");
+
+            _context.Add(device);
+            deviceTypeRepository.IncrementVersion(device.DeviceTypeId);
+
+            return Save();
+        }
+
+        public bool DeleteDevice(Device device)
+        {
+            device.DeleteFlag = 1;
+            _context.Update(device);
+            return Save();
+        }
+
+        public bool EditDevice(Device device)
+        {
+            _context.Update(device);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0;
+        }
     }
 }

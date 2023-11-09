@@ -2,6 +2,7 @@
 using InventorySystem.Dto;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
+using InventorySystem.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 
@@ -15,7 +16,9 @@ namespace InventorySystem.Controllers
         private readonly IDeviceRepository _deviceRepository;
         private readonly IMapper _mapper;
 
-        public DeviceController(IDeviceRepository deviceRepository, IMapper mapper)
+        public DeviceController(
+            IDeviceRepository deviceRepository,
+            IMapper mapper)
         {
             _deviceRepository = deviceRepository;
             _mapper = mapper;
@@ -26,9 +29,6 @@ namespace InventorySystem.Controllers
         public IActionResult GetAllDevices()
         {
             var d = _deviceRepository.GetAllDevices();
-            System.Diagnostics.Debug.WriteLine("------------------");
-            System.Diagnostics.Debug.WriteLine(d);
-            System.Diagnostics.Debug.WriteLine("------------------");
             var devices = _mapper.Map<List<DeviceDto>>(d);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,7 +48,7 @@ namespace InventorySystem.Controllers
         }
 
 
-        [HttpGet("device_id/{deviceId}")]
+        [HttpGet("deviceId&{deviceId}")]
         [ProducesResponseType(200, Type = typeof(Device))]
         [ProducesResponseType(400)]
         public IActionResult GetDevice(string deviceId)
@@ -145,6 +145,23 @@ namespace InventorySystem.Controllers
                 return BadRequest(ModelState);
 
             return Ok(devices);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateDevice(DeviceEditDto device)
+        {
+            if (device == null) return BadRequest(ModelState);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            Device deviceMapped = _mapper.Map<Device>(device);
+
+            _deviceRepository.AddDevice(deviceMapped);
+
+            return Ok("デバイス" + device.DeviceId + "作成完了");
+
         }
     }
 }

@@ -17,7 +17,15 @@ namespace InventorySystem.Repository
         {
             return _context.Lendings
                 .Include(l => l.User)
+                .ThenInclude(u => u.Department)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Position)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Sex)
                 .Include(l => l.Device)
+                .ThenInclude(d => d.DeviceType)
+                .Include(l => l.Device)
+                .ThenInclude(d => d.Os)
                 .Where(e => e.DeleteFlag == 0)
                 .OrderBy(x => x.RentalEnd)
                 .ToList();
@@ -27,7 +35,15 @@ namespace InventorySystem.Repository
         {
             return _context.Lendings
                 .Include(l => l.User)
+                .ThenInclude(u => u.Department)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Position)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Sex)
                 .Include(l => l.Device)
+                .ThenInclude(d => d.DeviceType)
+                .Include(l => l.Device)
+                .ThenInclude(d => d.Os)
                 .Where(e => e.RentalEnd <= DateTime.Today)
                 .OrderBy(x => x.RentalEnd)
                 .ToList();
@@ -37,9 +53,18 @@ namespace InventorySystem.Repository
         {
             return _context.Lendings
                 .Include(l => l.User)
+                .ThenInclude(u => u.Department)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Position)
+                .Include(l => l.User)
+                .ThenInclude(u => u.Sex)
                 .Include(l => l.Device)
+                .ThenInclude(d => d.DeviceType)
+                .Include(l => l.Device)
+                .ThenInclude(d => d.Os)
                 .Where(e => e.Id == id).FirstOrDefault();
         }
+
 
         public bool AddLending(Lending lending)
         {
@@ -55,7 +80,9 @@ namespace InventorySystem.Repository
 
         public bool DeleteLending(Lending lending)
         {
-            throw new NotImplementedException();
+            lending.DeleteFlag = 1;
+            _context.Update(lending);
+            return Save();
         }
 
 
@@ -63,6 +90,11 @@ namespace InventorySystem.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool LendingExist(int id)
+        {
+            return _context.Lendings.Any(l => l.Id == id);
         }
     }
 }

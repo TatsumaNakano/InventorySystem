@@ -32,7 +32,7 @@ namespace InventorySystem.Controllers
             return Ok(lendings);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id&{id}")]
         [ProducesResponseType(200, Type = typeof(Lending))]
         [ProducesResponseType(400)]
         public IActionResult GetLending(int id)
@@ -56,6 +56,20 @@ namespace InventorySystem.Controllers
                 return BadRequest(ModelState);
 
             return Ok(lendings);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateLending(LendingEditDto lending)
+        {
+            if(lending == null || !ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            var lendingMapped = _mapper.Map<Lending>(lending);
+            _lendingRepository.AddLending(lendingMapped);
+
+            return Ok("デバイスの貸し出し手続き完了");
         }
     }
 }

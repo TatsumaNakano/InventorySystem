@@ -3,13 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace InventorySystem.Dto
 {
-    public class DeviceDto
+    public class DeviceEditDto
     {
-        public int Id { get; set; }
-
         public string DeviceId { get; set; } = null!;
-
-        public string? OldName { get; set; }
+        //public string? OldName { get; set; }
 
         public int DeviceTypeId { get; set; }
 
@@ -40,16 +37,6 @@ namespace InventorySystem.Dto
         public int? Capacity { get; set; }
 
         public int? HasGpu { get; set; }
-
-        public int? CurrentUserId { get; set; }
-
-        public virtual DeviceUserDto? CurrentUser { get; set; }
-        public virtual DeviceTypeDto DeviceType { get; set; } = null!;
-
-        public virtual ICollection<LendingEditDto> Lendings { get; set; } = new List<LendingEditDto>();
-        public virtual DeviceMakerDto? Maker { get; set; }
-        public virtual OperationSystemDto? Os { get; set; }
-        public virtual StoragePlaceDto Place { get; set; } = null!;
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Utility;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -181,6 +182,42 @@ namespace InventorySystem.Repository
                 .Include(u => u.Gender)
                 .Include(u => u.Position)
                 .Where(Search).ToList();
+        }
+
+        public bool UserExist(int id)
+        {
+            return _context.Users.Any(u => u.Id == id);
+        }
+
+        public bool UserExist(string userId)
+        {
+            return _context.Users.Any(u => u.UserId == userId);
+        }
+
+
+        public bool AddUser(User user)
+        {
+            _context.Add(user);
+            return Save();
+        }
+
+        public bool DeleteUser(User user)
+        {
+            user.Deactivated = 1;
+            _context.Update(user);
+            return Save();
+        }
+
+        public bool EditUser(User user)
+        {
+            _context.Update(user);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0;
         }
     }
 }

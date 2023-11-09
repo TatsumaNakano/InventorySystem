@@ -17,7 +17,11 @@ public partial class Lending
 
     public int DeleteFlag { get; set; }
 
+    public string? Remarks { get; set; }
+
     public virtual Device Device { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
+
 }

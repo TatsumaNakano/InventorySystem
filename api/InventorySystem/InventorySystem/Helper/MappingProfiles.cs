@@ -9,9 +9,10 @@ namespace InventorySystem.Helper
         public MappingProfiles()
         {
             //Main
-            CreateMap<Lending, LendingDto>();
+            CreateMap<Lending, LendingEditDto>();
             CreateMap<Device, DeviceDto>();
             CreateMap<User, UserDto>();
+            
 
             //For Lending
             CreateMap<Device, LendingDeviceDto>();
@@ -31,6 +32,20 @@ namespace InventorySystem.Helper
             CreateMap<Position, PositionDto>();
             CreateMap<Sex,SexDto>();
             CreateMap<Lending, UserLendingDto>();
+
+            //Reverses
+            CreateMap<UserDto, User>();
+            CreateMap<DepartmentDto, Department>();
+            CreateMap<GenderDto, Gender>();
+            CreateMap<PositionDto, Position>();
+            CreateMap<SexDto, Sex>();
+            CreateMap<UserLendingDto, Lending>();
+            CreateMap<UserEditDto, User>();
+
+            CreateMap<DeviceEditDto, Device>();
+            CreateMap<Lending, LendingDto>();
+            CreateMap<LendingDto, Lending>();
+            CreateMap<LendingEditDto, Lending>();
 
         }
     }
