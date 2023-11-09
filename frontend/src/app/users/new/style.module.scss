@@ -1,0 +1,14 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+
+    >div,
+    a {
+        display: flex;
+        width: fit-content;
+        margin: 0 auto;
+        gap: 1rem;
+    }
+}

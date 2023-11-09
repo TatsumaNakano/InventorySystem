@@ -1,0 +1,102 @@
+.lendingDataDisplay {
+    width: 100%;
+
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .lendingList {
+        min-width: 100%;
+        display: grid;
+        grid-auto-flow: dense;
+        grid-template-columns: repeat(2, 1fr);
+        list-style: none;
+        gap: 1rem;
+
+
+        .lendingItem {
+            border-radius: var(--box-border-radius);
+            background-color: var(--listitem-background);
+            min-width: 50%;
+
+            div.info {
+                display: flex;
+                padding: 1rem;
+                gap: 1rem;
+                flex-grow: 1;
+                min-width: 50%;
+
+                >div {
+                    min-width: 50%;
+                }
+
+                h3.name {
+                    display: flex;
+                    margin: 0;
+
+                    label {
+                        span {
+                            display: block;
+                        }
+
+                        span.kana {
+                            font-size: 0.618rem;
+                        }
+
+                        span.kanji {
+                            font-size: 1.618rem;
+                        }
+                    }
+                }
+            }
+
+            div.buttonContainer {
+                display: flex;
+                gap: 1rem;
+                box-sizing: border-box;
+                margin: 1rem;
+
+            }
+        }
+
+    }
+
+    .nameLabel {
+        display: flex;
+        margin-bottom: 1rem;
+        padding-bottom: 0.618rem;
+
+
+        width: 100%;
+        display: flex;
+
+        h4.emoji {
+            margin: 0;
+            font-size: 2.617rem;
+            margin-right: 0.3rem;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.618rem;
+        }
+
+
+        label {
+            font-size: 0.8rem;
+        }
+    }
+
+    .left {
+        // padding-right: 2rem;
+    }
+
+    .right {}
+
+
+}

@@ -1,12 +1,12 @@
 
 import dynamic from "next/dynamic";
 
-const DeviceDataTable = dynamic(() => import("../../components/DeviceDataTable"), { ssr: false })
+const DeviceDataDisplay = dynamic(() => import("../../components/DeviceDataDisplay"), { ssr: false })
 
 const Devices = () => {
     return (
         <div>
-            <DeviceDataTable />
+            <DeviceDataDisplay />
         </div>
     );
 }

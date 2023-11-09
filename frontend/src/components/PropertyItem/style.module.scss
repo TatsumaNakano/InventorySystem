@@ -1,0 +1,23 @@
+.propertyItem {
+    display: flex;
+    justify-content: space-between;
+    // padding-bottom: 0.118rem;
+    line-height: 1.3rem;
+
+    label.name {
+        font-size: 0.8rem;
+        color: var(--dark-gray);
+    }
+
+    label.data {
+        font-size: 0.9rem;
+        color: var(--black);
+    }
+
+    label.nodata {
+        font-size: 1rem;
+        color: var(--light-gray);
+    }
+
+
+}

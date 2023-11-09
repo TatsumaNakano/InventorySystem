@@ -1,0 +1,31 @@
+.button {
+    // display: inline-block;
+    width: 100%;
+    max-width: 200px;
+    // height: 3rem;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    padding: 0.5rem 0;
+
+}
+
+.positive {
+    background-color: var(--positive-blue);
+    color: var(--white);
+}
+
+.warning {
+    background-color: var(--warning-red);
+    color: var(--white);
+}
+
+.detail {
+    border: solid 2px var(--positive-blue);
+    color: var(--black);
+}
+
+.disabled {
+    background-color: var(--dark-gray);
+    color: var(--light-gray);
+}
