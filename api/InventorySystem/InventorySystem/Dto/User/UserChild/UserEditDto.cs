@@ -6,6 +6,7 @@ namespace InventorySystem.Models;
 
 public partial class UserEditDto
 {
+    public int Id { get; set; }
 
     public string UserId { get; set; } = null!;
 
@@ -44,5 +45,6 @@ public partial class UserEditDto
     public DateTime UpdateDate { get; set; }
 
     public DateTime? LeftDate { get; set; }
+
 
 }

@@ -26,6 +26,11 @@ namespace InventorySystem.Repository
                 .OrderBy(x => x.Id).ToList();
         }
 
+        public ICollection<User> GetAvailableUsers()
+        {
+            return _context.Users.Where(u => u.Deactivated == 0).OrderBy(u => u.Id).ToList();
+        }
+
         public User GetUser(int id)
         {
             return _context.Users
@@ -47,6 +52,7 @@ namespace InventorySystem.Repository
                 .Include(u => u.Position)
                 .Where(e => e.UserId == userId).FirstOrDefault();
         }
+
 
         public User GetUserByPhoneNumber(string tel)
         {
@@ -200,16 +206,25 @@ namespace InventorySystem.Repository
             _context.Add(user);
             return Save();
         }
+        public bool ActivateUser(User user)
+        {
+            user.Deactivated = 0;
+            _context.Update(user);
+            return Save();
+        }
 
-        public bool DeleteUser(User user)
+
+        public bool DeactivateUser(User user)
         {
             user.Deactivated = 1;
             _context.Update(user);
             return Save();
         }
 
-        public bool EditUser(User user)
+        public bool UpdateUser(User user)
         {
+            //User userData = _context.Users.Find(user.Id);
+
             _context.Update(user);
             return Save();
         }

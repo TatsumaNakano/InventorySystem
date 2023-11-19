@@ -11,7 +11,7 @@ namespace InventorySystem.Repository
         {
             _context = context;            
         }
-        public ICollection<DeviceType> GetAllDeviceType()
+        public ICollection<DeviceType> GetAllDeviceTypes()
         {
             return _context.DeviceTypes.OrderBy(dt => dt.Id).ToList();
         }

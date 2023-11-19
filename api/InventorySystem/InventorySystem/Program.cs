@@ -28,6 +28,15 @@ builder.Services.AddScoped<ILendingRepository, LendingRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRespository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IGenderRepository, GenderRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDeviceMakerRepository, DeviceMakerRepository>();
+builder.Services.AddScoped<IDeviceTypeRepository, DeviceTypeRepository>();
+builder.Services.AddScoped<ISexRepository, SexRepository>();
+builder.Services.AddScoped<IStoragePlaceRepository, StoragePlaceRepository>();
+builder.Services.AddScoped<IOperationSystemRepository, OperationSystemRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

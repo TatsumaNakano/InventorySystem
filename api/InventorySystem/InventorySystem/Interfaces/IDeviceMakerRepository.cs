@@ -4,6 +4,6 @@ namespace InventorySystem.Interfaces
 {
     public interface IDeviceMakerRepository
     {
-        public ICollection<DeviceMaker> GetAllDeviceMaker();
+        public ICollection<DeviceMaker> GetAllDeviceMakers();
     }
 }

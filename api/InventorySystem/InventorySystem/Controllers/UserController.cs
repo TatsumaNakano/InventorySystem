@@ -30,6 +30,18 @@ namespace InventorySystem.Controllers
             return Ok(users);
         }
 
+        [HttpGet("available")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetAvailableUsers()
+        {
+            var users = _mapper.Map<List<UserDto>>(_userRepository.GetAvailableUsers());
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(users);
+        }
+
         [HttpGet("id/{id}")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
@@ -42,7 +54,7 @@ namespace InventorySystem.Controllers
             return Ok(user);
         }
 
-        [HttpGet("userId&{userId}")]
+        [HttpGet("userId/{userId}")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         public IActionResult GetUser(string userId)
@@ -183,7 +195,89 @@ namespace InventorySystem.Controllers
             return Ok("ユーザー作成完了");
         }
 
+        [HttpPut("edit/{userId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateUser(string userId,[FromBody] UserEditDto updatedUser)
+        {
+            if (updatedUser == null) return BadRequest(ModelState);
 
+            if (!_userRepository.UserExist(userId))
+            {
+                ModelState.AddModelError("", "ユーザ「"+ userId + "」は見つかりません。");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var mappedUser = _mapper.Map<User>(updatedUser);
+
+            if (!_userRepository.UpdateUser(mappedUser))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("ユーザー編集完了。");
+        }
+
+        [HttpPut("deactivate/{userId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeactivateUser(string userId, [FromBody] UserEditDto updatedUser)
+        {
+            if (updatedUser == null) return BadRequest(ModelState);
+
+            if (!_userRepository.UserExist(userId))
+            {
+                ModelState.AddModelError("", "ユーザ「" + userId + "」は見つかりません。");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var mappedUser = _mapper.Map<User>(updatedUser);
+
+            if (!_userRepository.DeactivateUser(mappedUser))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("ユーザー削除完了。");
+        }
+
+        [HttpPut("activate/{userId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult ActivateUser(string userId, [FromBody] UserEditDto updatedUser)
+        {
+            if (updatedUser == null) return BadRequest(ModelState);
+
+            if (!_userRepository.UserExist(userId))
+            {
+                ModelState.AddModelError("", "ユーザ「" + userId + "」は見つかりません。");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var mappedUser = _mapper.Map<User>(updatedUser);
+
+            if (!_userRepository.ActivateUser(mappedUser))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("ユーザー削除完了。");
+        }
 
     }
 }

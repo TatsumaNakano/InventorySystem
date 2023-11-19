@@ -4,7 +4,7 @@ namespace InventorySystem.Interfaces
 {
     public interface IDeviceTypeRepository
     {
-        public ICollection<DeviceType> GetAllDeviceType();
+        public ICollection<DeviceType> GetAllDeviceTypes();
 
         public string GetNextDeviceId(int deviceTypeId);
 
