@@ -1,0 +1,47 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+
+    >div {
+        display: flex;
+        width: fit-content;
+        margin: 0 auto;
+        gap: 1rem;
+        width: 60%;
+    }
+}
+
+.input {
+    width: 50%;
+}
+
+.isAdmin {
+    width: 100%;
+}
+
+.textarea {
+    width: 100%;
+
+    textarea {
+        min-height: 100px;
+    }
+
+}
+
+.onebutton {
+    margin: 0 auto;
+    width: 180px;
+}
+
+.twobutton {
+    // margin: 0 auto;
+    width: 180px;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.618rem !important;
+}

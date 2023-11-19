@@ -16,7 +16,7 @@ const DeviceDataDisplay = () => {
     useEffect(() => {
 
         const getdeviceData = async () => {
-            const query = await fetch("https://localhost:7070/api/Device");
+            const query = await fetch(`${process.env.API_PATH}/api/Device`);
             const response = await query.json();
             setDeviceData(response);
         }
@@ -96,11 +96,11 @@ const DeviceItem = ({ item }: any) => {
             <div className={style.buttonContainer}>
                 {
                     item.currentUser == null ?
-                        <Button type={buttonStates.positive} text="貸し出す" link="/" /> :
-                        <Button type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} link="/" />
+                        <Button className={style.button} type={buttonStates.positive} text="貸し出す" link={{ pathname: `/lendings/edit`, query: item }} /> :
+                        <Button className={style.button} type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} />
                 }
 
-                <Button type={buttonStates.detail} text="詳細情報" link="/" />
+                <Button className={style.button} type={buttonStates.detail} text="詳細情報" link={`/devices/${item.deviceId}`} />
             </div>
         </li>
     );

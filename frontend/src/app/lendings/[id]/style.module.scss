@@ -1,0 +1,106 @@
+.lendingItem {
+    border-radius: var(--box-border-radius);
+    background-color: var(--listitem-background);
+    min-width: 50%;
+
+    div.info {
+        display: flex;
+        padding: 1rem;
+        // gap: 1rem;
+        flex-grow: 1;
+        min-width: 50%;
+
+        >div {
+            // min-width: 50%;
+            width: 50%;
+
+            &:first-child {
+                padding-right: 1rem;
+            }
+        }
+
+        .date {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+
+            label {
+                display: block;
+                font-size: 1rem;
+                font-weight: 800;
+                margin-bottom: 0.18rem;
+            }
+
+            h5 {
+                font-size: 1.618rem;
+                margin: 0;
+            }
+        }
+
+        h3.name {
+            display: flex;
+            margin: 0;
+
+            label {
+                span {
+                    display: block;
+                }
+
+                span.kana {
+                    font-size: 0.618rem;
+                }
+
+                span.kanji {
+                    font-size: 1.618rem;
+                }
+            }
+        }
+    }
+
+    div.buttonContainer {
+        display: flex;
+        gap: 1rem;
+        box-sizing: border-box;
+        padding: 1rem;
+
+        .button {
+            width: 50%;
+        }
+
+    }
+}
+
+
+
+.nameLabel {
+    display: flex;
+    margin-bottom: 1rem;
+    padding-bottom: 0.618rem;
+
+
+    width: 100%;
+    display: flex;
+
+    h4.emoji {
+        margin: 0;
+        font-size: 2.617rem;
+        margin-right: 0.3rem;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.618rem;
+    }
+
+
+    label {
+        font-size: 0.8rem;
+    }
+}
+
+.left {
+    // padding-right: 2rem;
+}
+
+.right {}

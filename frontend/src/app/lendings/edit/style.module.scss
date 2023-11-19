@@ -4,11 +4,23 @@
     justify-content: center;
     gap: 1rem;
 
-    >div,
-    a {
+    >div {
         display: flex;
-        width: fit-content;
+        width: 60%;
         margin: 0 auto;
         gap: 1rem;
     }
+}
+
+.input {
+    width: 50%;
+}
+
+.textarea {
+    width: 100%;
+}
+
+.button {
+    width: 180px;
+    margin: 0 auto;
 }

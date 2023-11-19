@@ -1,0 +1,44 @@
+.messagePopup {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(43, 43, 43, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >div {
+        width: 30%;
+        height: fit-content;
+        background-color: aliceblue;
+        border-radius: var(--box-border-radius);
+        padding: 1.618rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.618rem;
+        margin: 0 auto;
+
+        >div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        p {
+            font-size: 1rem;
+            text-align: center;
+            margin: 0 0 1rem 0;
+
+        }
+    }
+}
+
+.button {
+    width: 180px;
+}

@@ -17,7 +17,7 @@ const UserDataDisplay = () => {
     useEffect(() => {
 
         const getUserData = async () => {
-            const query = await fetch("https://localhost:7070/api/User");
+            const query = await fetch(`${process.env.API_PATH}/api/User`);
             const response = await query.json();
             setUserData(response);
         }
@@ -37,7 +37,7 @@ export default UserDataDisplay;
 
 
 const UserList = ({ data }: any) => {
-    console.log(data);
+    // console.log(data);
     return (
         <ul className={style.userList}>
             {data.map((user: any) => {
@@ -49,62 +49,67 @@ const UserList = ({ data }: any) => {
 
 
 const UserItem = ({ user }: any) => {
-    console.log(user);
+    // console.log(user);
     return (
         <li className={style.userItem}>
             <div className={style.info}>
-                {/* Left Section */}
-                <div className={style.left}>
-                    <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
+                <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
 
-                        {/* Name */}
+                    {/* Name */}
 
-                        <h4 className={style.emoji}>
-                            <UserEmoji type={user.sex.id} />
-                        </h4>
-                        <h3 className={style.name}>
-                            <label>
-                                <span className={style.kana}>{user.kanaLastName}</span>
-                                <span className={style.kanji}>{user.lastName}</span>
-                            </label>
-                            <label>
-                                <span className={style.kana}>{user.kanaFirstName}</span>
-                                <span className={style.kanji}>{user.firstName}</span>
-                            </label>
-                        </h3>
-
-                    </div>
-                    <div className={commonStyle.borderBottom}>{/* Detail Info */}
-                        {/* <DetailPropertyInfo item={item} /> */}
-                        <PropertyItem label="社員番号" data={user.userId} />
-                        <PropertyItem label="部署" data={user.department.name} />
-                        <PropertyItem label="役職" data={user.position.name} />
-                        <PropertyItem label="管理者権限" data={user.isAdmin ? "有" : "無"} />
-                    </div>
-                    <div>
-                        <PropertyItem label="年齢" data={user.birthday == null ? user.ageDeprecated : getAgeByBirthday(user.birthday)} />
-                        <PropertyItem label="性別" data={user.sex.name} />
-                    </div>
-
+                    <h4 className={style.emoji}>
+                        <UserEmoji type={user.sex.id} />
+                    </h4>
+                    <h3 className={style.name}>
+                        <label>
+                            <span className={style.kana}>{user.kanaLastName}</span>
+                            <span className={style.kanji}>{user.lastName}</span>
+                        </label>
+                        <label>
+                            <span className={style.kana}>{user.kanaFirstName}</span>
+                            <span className={style.kanji}>{user.firstName}</span>
+                        </label>
+                    </h3>
 
                 </div>
+                <div className={style.half}>
+                    {/* Left Section */}
+                    <div className={style.left}>
+                        <div className={`${commonStyle.paddingBottomOneRem} ${commonStyle.marginBottomOneRem} ${commonStyle.borderBottom}`}>{/* Detail Info */}
+                            {/* <DetailPropertyInfo item={item} /> */}
+                            <PropertyItem label="社員番号" data={user.userId} />
+                            <PropertyItem label="部署" data={user.department.name} />
+                            <PropertyItem label="役職" data={user.position.name} />
+                            <PropertyItem label="管理者権限" data={user.isAdmin ? "有" : "無"} />
+                        </div>
+                        <div>
+                            <PropertyItem label="年齢" data={user.birthday == null ? user.ageDeprecated : getAgeByBirthday(user.birthday)} />
+                            <PropertyItem label="性別" data={user.sex.name} />
+                        </div>
 
 
-                {/* Right Section */}
-                <div className={style.right}>
-                    <div>{/* 登録更新 */}
-                        <PropertyItem label="📞" data={user.telNumber} />
-                        <PropertyItem label="📧" data={user.email} />
                     </div>
 
-                    <div>{/* 備考 */}
-                        <PropertyItem label="備考" data={user.remarks} breakLine messageOnNull="記入なし" />
-                    </div>
+                    {/* Right Section */}
+                    <div className={style.right}>
+                        <div className={commonStyle.paddingBottomOneRem}>{/* 登録更新 */}
+                            <PropertyItem label="" data={user.telNumber} />
+                            <PropertyItem label="" data={user.email} />
+                        </div>
 
-                </div>
-            </div >
+                        <div>{/* 備考 */}
+                            <PropertyItem label="備考" data={user.remarks} breakLine messageOnNull="記入なし" />
+                        </div>
+
+                    </div>
+                </div >
+            </div>
             <div className={style.buttonContainer}>
-                <Button type={buttonStates.detail} text="詳細情報" link="/" />
+                <Button className={style.button} type={buttonStates.detail} text="詳細情報" link={`/users/${user.userId}`} />
+                {/* <Button type={buttonStates.detail} text="詳細情報" link={{
+                    pathname: `/users/${user.userId}`,
+                    query: user // the data
+                }} /> */}
             </div>
         </li >
     );

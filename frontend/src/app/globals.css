@@ -1,5 +1,6 @@
 :root {
   --listitem-background: #F9F9F9;
+  --listitem-deactivated-background: #c9c9c9;
   --border-color: #E2E2E2;
   --black: #0A0A0A;
   --white: #FFFFFF;
@@ -9,6 +10,7 @@
 
   --positive-blue: #27D6FF;
   --warning-red: #FF294D;
+  --selection-blue: #b0f1ff;
   --box-border-radius: 20px;
   --input-border-radius: 10px;
   font-size: 16px;

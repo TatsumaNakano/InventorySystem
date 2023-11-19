@@ -4,54 +4,37 @@ import { useEffect, useState } from "react";
 import { TupleType } from "typescript";
 import style from "./style.module.scss"
 import commonStyle from "@/components/styles/commom.module.scss"
-import Emoji from "../DeviceEmoji";
-import PropertyItem from "../PropertyItem";
+import Emoji from "@/components/DeviceEmoji";
+import PropertyItem from "@/components/PropertyItem";
 import { formatDate, formatByteSize, getAgeByBirthday } from "@/utility/utility";
-import Button from "../Button";
+import Button from "@/components/Button";
 import { buttonStates } from "@/utility/states";
-import DeviceEmoji from "../DeviceEmoji";
-import UserEmoji from "../UserEmoji";
+import DeviceEmoji from "@/components/DeviceEmoji";
+import UserEmoji from "@/components/UserEmoji";
+import { usePathname } from 'next/navigation'
 
-const LendingDataDisplay = () => {
+const LendingItem = () => {
+    const [lendingData, setLendingData] = useState();
+    const path = usePathname();
 
-    const [lendingData, setLendingData] = useState([]);
+
     useEffect(() => {
-
-        const getUserData = async () => {
-            const query = await fetch(`${process.env.API_PATH}/api/Lending`);
+        const getLendingData = async () => {
+            const lendingid = path.substring(path.lastIndexOf('/') + 1)
+            const query = await fetch(`${process.env.API_PATH}/api/Lending/id&${lendingid}`);
             const response = await query.json();
             setLendingData(response);
         }
 
-        getUserData();
-    }, []);
+        getLendingData();
+    }, [path])
 
+    const lending = lendingData as any;
+
+    if (!lending) return;
+    console.log(lending);
     return (
-        <div className={style.lendingDataDisplay}>
-            <LendingList data={lendingData} />
-        </div>
-    );
-}
-
-export default LendingDataDisplay;
-
-
-
-const LendingList = ({ data }: any) => {
-    // console.log(data);
-    return (
-        <ul className={style.lendingList}>
-            {data.map((lending: any) => {
-                return <LendingItem lending={lending} key={lending.id} />
-            })}
-        </ul>
-    );
-}
-
-const LendingItem = ({ lending }: any) => {
-    // console.log(lending);
-    return (
-        <li className={style.lendingItem}>
+        <div className={style.lendingItem}>
             <div className={style.info}>
                 {/* Left Section */}
                 <div className={style.left}>
@@ -107,16 +90,20 @@ const LendingItem = ({ lending }: any) => {
                     <PropertyItem label="部署" data={lending.user.department.name} />
                     <PropertyItem label="役職" data={lending.user.position.name} />
                     <div>{/* 備考 */}
-                        {/* <PropertyItem label="備考" data={user.remarks} breakLine messageOnNull="記入なし" /> */}
-                    </div>
 
+                    </div>
+                    <PropertyItem label="備考" data={lending.remarks} breakLine messageOnNull="記入なし" />
                 </div>
             </div >
             <div className={style.buttonContainer}>
                 <Button className={style.button} type={buttonStates.warning} text="返却" link="/" />
-                <Button className={style.button} type={buttonStates.detail} text="詳細情報" link={`/lendings/${lending.id}`} />
+                <Button className={style.button} type={buttonStates.detail} text="編集" link={{
+                    pathname: `/lendings/edit`,
+                    query: lending
+                }} />
             </div>
-        </li >
+        </div >
     );
 }
 
+export default LendingItem;

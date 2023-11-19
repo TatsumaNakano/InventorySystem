@@ -6,12 +6,12 @@ import commonStyle from "@/components/styles/commom.module.scss"
 import Button from "../Button";
 import { buttonStates } from "@/utility/states";
 
-const UserToolbar = () => {
+const LendingToolbar = () => {
     return (
         <div className={commonStyle.toolbar}>
-            <Button className={style.button} type={buttonStates.positive} text="ユーザの新規登録" link="/users/edit" />
+            <Button className={style.button} type={buttonStates.positive} text="新規貸出" link="/lendings/edit" />
         </div>
     );
 }
 
-export default UserToolbar;
+export default LendingToolbar;

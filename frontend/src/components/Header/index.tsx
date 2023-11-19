@@ -6,7 +6,7 @@ const Header = () => {
         <header className={style.header}>
             <div>
                 <div className={style.logo}>
-                    <h1>貸出管理システム</h1>
+                    <Link href="/"><h1>貸出管理システム</h1></Link>
                 </div>
 
                 <div className={style.menu}>

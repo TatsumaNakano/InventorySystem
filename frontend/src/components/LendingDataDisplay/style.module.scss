@@ -22,17 +22,23 @@
         .lendingItem {
             border-radius: var(--box-border-radius);
             background-color: var(--listitem-background);
+
             min-width: 50%;
 
             div.info {
                 display: flex;
                 padding: 1rem;
-                gap: 1rem;
+                // gap: 1rem;
                 flex-grow: 1;
                 min-width: 50%;
 
                 >div {
-                    min-width: 50%;
+
+                    width: 50%;
+
+                    &:first-child {
+                        padding-right: 1rem;
+                    }
                 }
 
                 h3.name {
@@ -56,12 +62,38 @@
             }
 
             div.buttonContainer {
+                width: 100%;
                 display: flex;
                 gap: 1rem;
                 box-sizing: border-box;
-                margin: 1rem;
+                padding: 1rem;
+
+                .button {
+                    width: 50%;
+                }
 
             }
+
+            .date {
+                background-color: white;
+                padding: 1rem;
+                border-radius: 10px;
+                margin-bottom: 1rem;
+
+                label {
+                    display: block;
+                    font-size: 0.618rem;
+                    font-weight: 800;
+                    margin-bottom: 0.18rem;
+                }
+
+                h5 {
+                    font-size: 1rem;
+                    margin: 0;
+                }
+            }
+
+
         }
 
     }

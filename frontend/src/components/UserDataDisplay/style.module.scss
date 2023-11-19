@@ -25,41 +25,38 @@
             min-width: 50%;
 
             div.info {
-                display: flex;
-                padding: 1rem;
-                gap: 1rem;
-                flex-grow: 1;
-                min-width: 50%;
 
-                >div {
-                    min-width: 50%;
-                }
 
-                h3.name {
+                >div.half {
                     display: flex;
+                    padding: 1rem;
+                    // gap: 1rem;
+                    flex-grow: 1;
+                    min-width: 50%;
 
-                    label {
-                        span {
-                            display: block;
+                    >div {
+                        width: 50%;
+
+                        &:first-child {
+                            padding-right: 1rem;
                         }
 
-                        span.kana {
-                            font-size: 0.618rem;
-                        }
-
-                        span.kanji {
-                            font-size: 1.618rem;
-                        }
                     }
+
                 }
+
             }
 
             div.buttonContainer {
+                width: 100%;
                 display: flex;
-                gap: 1rem;
+                // gap: 1rem;
                 box-sizing: border-box;
-                margin: 1rem;
+                padding: 1rem;
 
+                .button {
+                    width: 100%;
+                }
             }
         }
 
@@ -67,8 +64,8 @@
 
     .nameLabel {
         display: flex;
-        margin-bottom: 1rem;
-        padding-bottom: 0.618rem;
+        margin: 1rem;
+        margin-bottom: 0;
 
         h4.emoji {
             margin: 0;
@@ -84,13 +81,28 @@
         label {
             font-size: 0.8rem;
         }
-    }
 
-    .left {
-        // padding-right: 2rem;
-    }
+        h3.name {
+            display: flex;
 
-    .right {}
+            label {
+                text-overflow: clip;
+
+                span {
+                    display: block;
+                    text-align: center;
+                }
+
+                span.kana {
+                    font-size: 0.618rem;
+                }
+
+                span.kanji {
+                    font-size: 1.618rem;
+                }
+            }
+        }
+    }
 
 
 }

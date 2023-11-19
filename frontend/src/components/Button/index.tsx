@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { buttonStates } from "@/utility/states";
 import style from "./style.module.scss";
@@ -5,10 +6,13 @@ import style from "./style.module.scss";
 interface ButtonInterface {
     type: string,
     text: string,
-    link: string
+    link?: string | object,
+    onClick?: any | null,
+    className?: string,
+    replace?: boolean
 }
 
-const Button = ({ type, text = "", link = "/" }: ButtonInterface) => {
+const Button = ({ type, text = "", link = "", onClick = null, className, replace = false }: ButtonInterface) => {
 
     var buttonStyle = (() => {
         switch (type) {
@@ -25,8 +29,10 @@ const Button = ({ type, text = "", link = "/" }: ButtonInterface) => {
         }
     })();
 
+    const disable = link || onClick ? {} : { pointerEvents: "none" };
+
     return (
-        <Link href={link} className={`${style.button} ${buttonStyle}`}>
+        <Link href={link} className={`${style.button} ${buttonStyle} ${className}`} style={disable as any} onClick={onClick}>
             {text}
         </Link>
     );

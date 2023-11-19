@@ -1,3 +1,11 @@
+.paddingBottomOneRem {
+    padding-bottom: 1rem;
+}
+
+.marginBottomOneRem {
+    margin-bottom: 1rem;
+}
+
 .borderBottom {
     border-bottom: 1px solid var(--border-color);
 }
@@ -7,6 +15,12 @@
     border: none;
     padding: 0.618rem;
     border-radius: var(--input-border-radius);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.warningOutline {
+    border: solid var(--warning-red) 2px;
 }
 
 .toolbar {
@@ -15,4 +29,39 @@
     height: 2.7rem;
     border-radius: var(--input-border-radius);
     margin-bottom: 2rem;
+}
+
+.inputCommon {
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+
+    label {
+        font-size: 0.6rem;
+        font-weight: 800;
+        padding-left: 0.3rem;
+        color: var(--dark-gray);
+        margin-bottom: 0.2rem;
+        letter-spacing: 0.05rem;
+    }
+
+    input,
+    select,
+    button {
+        height: 2.618rem;
+        padding: 0 1rem;
+    }
+
+    .labelWrapper {
+        display: flex;
+        justify-content: space-between;
+
+        label {}
+
+        .warningLabel {
+            color: var(--warning-red);
+        }
+    }
 }
