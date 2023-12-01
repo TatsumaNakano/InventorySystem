@@ -10,11 +10,12 @@ const DeviceDataDisplay = dynamic(() => import("../../components/DeviceDataDispl
 const Devices = () => {
 
     const [searchString, setSearchString] = useState("");
+    const [connected, setConnected] = useState(false);
 
     return (
         <div>
-            <DeviceToolbar setSearchString={setSearchString} />
-            <DeviceDataDisplay searchString={searchString} />
+            {connected ? <DeviceToolbar setSearchString={setSearchString} /> : null}
+            <DeviceDataDisplay searchString={searchString} onConnected={() => setConnected(true)} />
         </div>
     );
 }

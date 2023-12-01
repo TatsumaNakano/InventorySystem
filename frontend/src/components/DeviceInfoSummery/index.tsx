@@ -1,4 +1,4 @@
-import { fetchAndSet } from "@/utility/utility";
+import { base64ToEmoji, fetchAndSet } from "@/utility/utility";
 import style from "./style.module.scss"
 import { useEffect, useState } from "react";
 
@@ -32,7 +32,7 @@ const StatusBar = ({ text, data }: any) => {
     return (
         <div className={style.statusBar}>
             <div>
-                <label>{text}</label>
+                <label>{base64ToEmoji(data[0].deviceType.emoji)}{text}</label>
             </div>
             <div>
                 <label>貸出可能:{itemAvailable}台</label>

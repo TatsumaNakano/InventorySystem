@@ -156,6 +156,7 @@ public partial class InventorySystemContext : DbContext
                 .HasMaxLength(30)
                 .HasColumnName("emoji");
             entity.Property(e => e.NextVersion).HasColumnName("next_version");
+            entity.Property(e => e.IsComputer).HasColumnName("is_computer");
         });
 
         modelBuilder.Entity<Gender>(entity =>
@@ -189,6 +190,10 @@ public partial class InventorySystemContext : DbContext
             entity.Property(e => e.RentalStart)
                 .HasColumnType("datetime")
                 .HasColumnName("rental_start");
+            entity.Property(e => e.ReturnedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("returned_date");
+
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.Property(e => e.TempId)

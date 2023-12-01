@@ -15,5 +15,7 @@ public partial class DeviceType
 
     public string Emoji { get; set; }
 
+    public int IsComputer { get; set; }
+
     public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
 }

@@ -10,6 +10,8 @@ namespace InventorySystem.Dto
 
         public DateTime RentalEnd { get; set; }
 
+        public DateTime? ReturnedDate { get; set; }
+
         public int DeleteFlag { get; set; }
 
         public int DeviceId { get; set; }

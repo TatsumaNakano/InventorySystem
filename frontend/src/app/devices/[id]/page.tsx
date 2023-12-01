@@ -118,10 +118,10 @@ const DetailPropertyInfo = ({ item }: any) => {
     var properties: any = [];
     properties.push(<PropertyItem label="タイプ" data={item.deviceType?.name} skipOnNull key={item.deviceId + "_type"} />);
     properties.push(<PropertyItem label="メーカー" data={item.maker?.name} skipOnNull key={item.deviceId + "_maker"} />);
-    properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull key={item.deviceId + "_os"} />);
-    properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull key={item.deviceId + "_memory"} />);
-    properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull key={item.deviceId + "_capacity"} />);
-    properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull key={item.deviceId + "_gpu"} />);
+    item.os != null ? properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull key={item.deviceId + "_os"} />) : null;
+    item.memory != null ? properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull key={item.deviceId + "_memory"} />) : null;
+    item.capacity != null ? properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull key={item.deviceId + "_capacity"} />) : null;
+    item.hasGpu != null ? properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull key={item.deviceId + "_gpu"} />) : null;
 
 
     return (

@@ -10,11 +10,12 @@ const UserDataDisplay = dynamic(() => import("../../components/UserDataDisplay")
 
 const Users = () => {
     const [searchString, setSearchString] = useState("");
+    const [connected, setConnected] = useState(false);
 
     return (
         <div>
-            <UserToolbar setSearchString={setSearchString} />
-            <UserDataDisplay searchString={searchString} />
+            {connected ? <UserToolbar setSearchString={setSearchString} /> : null}
+            <UserDataDisplay searchString={searchString} onConnect={() => setConnected(true)} />
         </div>
     );
 }

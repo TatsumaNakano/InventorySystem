@@ -94,6 +94,7 @@ namespace InventorySystem.Repository
         {
             _context.Devices.Where(d => d.Id == lending.DeviceId).FirstOrDefault().CurrentUserId = null;
             lending.DeleteFlag = 1;
+            lending.ReturnedDate = DateTime.Now;
             _context.Update(lending);
             return Save();
         }

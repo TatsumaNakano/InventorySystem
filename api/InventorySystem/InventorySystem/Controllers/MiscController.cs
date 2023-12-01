@@ -139,18 +139,18 @@ namespace InventorySystem.Controllers
         // DeviceType --------------------------------------
         //--------------------------------------------------
 
-        [HttpPost("addDeviceType/{newDeviceTypeName}&{newDeviceTypePrefix}&{newDeviceTypeEmoji}")]
+        [HttpPost("addDeviceType/{newDeviceTypeName}&{newDeviceTypePrefix}&{newDeviceTypeEmoji}&{isComputer}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult AddDeviceType(string newDeviceTypeName, string newDeviceTypePrefix, string newDeviceTypeEmoji)
+        public IActionResult AddDeviceType(string newDeviceTypeName, string newDeviceTypePrefix, string newDeviceTypeEmoji, int isComputer)
         {
             bool nameAlreadyExists = _deviceTypeRepository.NameAlreadyExists(newDeviceTypeName);
             bool prefixAlreadyExists = _deviceTypeRepository.PrefixAlreadyExists(newDeviceTypeName);
 
             if (!ModelState.IsValid || nameAlreadyExists || prefixAlreadyExists) return BadRequest(ModelState);
 
-            _deviceTypeRepository.AddDeviceType(newDeviceTypeName,newDeviceTypePrefix, newDeviceTypeEmoji);
+            _deviceTypeRepository.AddDeviceType(newDeviceTypeName,newDeviceTypePrefix, newDeviceTypeEmoji, isComputer);
 
             return Ok();
         }

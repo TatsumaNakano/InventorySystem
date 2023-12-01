@@ -569,7 +569,7 @@ const UserEdit = ({ searchParams }: any) => {
         <form className={style.form}>
 
             <div>
-                <TextInput label="社員番号*" className={style.input} placeholder="社員番号" onChange={setUserId} initialValue={userId ? userId : ""} warning={userIdWarning}></TextInput >
+                <TextInput label="社員番号*" className={style.input} placeholder="例）X0123" onChange={setUserId} initialValue={userId ? userId : ""} warning={userIdWarning}></TextInput >
                 <DatePicker label="誕生日*" className={style.input} placeholder="誕生日" onChange={setBirthday} initialValue={birthday ? birthday : null} warning={birthdayWarning} max={new Date().toISOString().split('T')[0]} />
             </div>
             <div>

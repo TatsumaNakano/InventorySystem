@@ -98,10 +98,10 @@ const LendingItem = () => {
                                 </div>
                             </div>
                             <PropertyItem label="タイプ" data={lending.device.deviceType.name} />
-                            <PropertyItem label="OS" data={lending.device.os.name} />
-                            <PropertyItem label="メモリ" data={formatByteSize(lending.device.memory)} />
-                            <PropertyItem label="容量" data={formatByteSize(lending.device.capacity)} />
-                            <PropertyItem label="GPU" data={lending.device.hasGpu ? "有" : "無"} />
+                            {lending.device.os != null ? <PropertyItem label="OS" data={lending.device.os.name} /> : null}
+                            {lending.device.memory != null ? <PropertyItem label="メモリ" data={formatByteSize(lending.device.memory)} /> : null}
+                            {lending.device.capacity != null ? <PropertyItem label="容量" data={formatByteSize(lending.device.capacity)} /> : null}
+                            {lending.device.hasGpu != null ? <PropertyItem label="GPU" data={lending.device.hasGpu ? "有" : "無"} /> : null}
                         </div>
 
                     </div>

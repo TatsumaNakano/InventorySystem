@@ -50,9 +50,9 @@ namespace InventorySystem.Repository
             return _context.DeviceTypes.Any(dt => dt.Id == deviceTypeId);
         }
 
-        public bool AddDeviceType(string name, string prefix, string emoji)
+        public bool AddDeviceType(string name, string prefix, string emoji,int isComputer)
         {
-            DeviceType deviceType = new DeviceType() { Name = name, DevicePrefix = prefix, Emoji=emoji, NextVersion=1};
+            DeviceType deviceType = new DeviceType() { Name = name, DevicePrefix = prefix, Emoji=emoji, IsComputer=isComputer, NextVersion=1};
             _context.DeviceTypes.Add(deviceType);
 
             return Save();

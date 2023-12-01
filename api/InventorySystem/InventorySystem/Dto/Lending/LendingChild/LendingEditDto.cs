@@ -4,9 +4,13 @@ namespace InventorySystem.Dto
 {
     public class LendingEditDto
     {
+        public int Id { get; set; }
+
         public DateTime RentalStart { get; set; }
 
         public DateTime RentalEnd { get; set; }
+
+        public DateTime? ReturnedDate { get; set; }
 
         public int DeleteFlag { get; set; }
 

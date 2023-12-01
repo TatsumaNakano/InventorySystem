@@ -15,6 +15,8 @@ public partial class Lending
 
     public DateTime RentalEnd { get; set; }
 
+    public DateTime? ReturnedDate { get; set; }
+
     public int DeleteFlag { get; set; }
 
     public string? Remarks { get; set; }

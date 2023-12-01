@@ -14,8 +14,12 @@ import { useRecoilState } from "recoil";
 import { popupState } from "@/utility/recoilStates";
 import { messageStates } from "../MessagePopup";
 import { parseISO } from "date-fns";
+import Loading from "../Loading";
 
-const LendingDataDisplay = () => {
+const LendingDataDisplay = ({ onConnected }: any) => {
+
+    const [pageReady, setPageReady] = useState<boolean>(false);
+    const [loadStatus, setLoadStatus] = useState<string>("");
 
     const [notDuelendings, setNotDueLendings] = useState([]);
     const [dueLendings, setDueLending] = useState([]);
@@ -26,29 +30,48 @@ const LendingDataDisplay = () => {
     useEffect(() => {
 
         const getCurrentLendingData = async () => {
-            const query = await fetch(`${process.env.API_PATH}/api/Lending`);
-            const response = await query.json();
-            const today = new Date();
-            const resDueLendings = response.filter((lending: any) => parseISO(lending.rentalEnd) <= today);
-            const resNotDueLendings = response.filter((lending: any) => parseISO(lending.rentalEnd) > today);
+            try {
+                const query = await fetch(`${process.env.API_PATH}/api/Lending`);
 
-            setDueLending(resDueLendings);
-            setNotDueLendings(resNotDueLendings);
+                if (!query.ok) {
+
+                    setPageReady(false);
+                    setLoadStatus("サーバーに接続できませんでした。");
+                    throw new Error(`Failed to fetch data. Status: ${query.status}`);
+                }
+
+                const response = await query.json();
+                const today = new Date();
+                const resDueLendings = response.filter((lending: any) => parseISO(lending.rentalEnd) <= today);
+                const resNotDueLendings = response.filter((lending: any) => parseISO(lending.rentalEnd) > today);
+
+                setDueLending(resDueLendings);
+                setNotDueLendings(resNotDueLendings);
+                setPageReady(true);
+                onConnected();
+            } catch (error: any) {
+                // Handle the error here
+                console.error('Error fetching data:', error.message);
+                setPageReady(false);
+                setLoadStatus("サーバーに接続できませんでした。");
+                // You might want to display an error message to the user or log the error for further investigation
+            }
         }
 
         getCurrentLendingData();
     }, []);
 
+    if (!pageReady) return <Loading message={loadStatus} />
+
     return (
+
         <div className={style.lendingDataDisplay}>
-            <h5>返却期限の過ぎたもの</h5>
+            {dueLendings.length > 0 ? <h5>返却期限の過ぎたもの</h5> : null}
             <LendingList data={dueLendings} setData={setDueLending} />
 
-            <h5>その他貸出中</h5>
+            {notDuelendings.length > 0 ? <h5>その他貸出中</h5> : null}
             <LendingList data={notDuelendings} setData={setNotDueLendings} />
-            {/* 
-            <h5>過去の貸し出し</h5>
-            <LendingList data={lendingData} setData={setLendingData} /> */}
+
         </div>
     );
 }
@@ -127,6 +150,7 @@ const LendingItem = ({ lending, deleteItem }: any) => {
     return (
         <li className={style.lendingItem}>
             <div className={style.info}>
+                {/* <div> */}
                 {/* Left Section */}
                 <div className={style.left}>
                     <div className={style.date}>
@@ -145,10 +169,10 @@ const LendingItem = ({ lending, deleteItem }: any) => {
                             </div>
                         </div>
                         <PropertyItem label="タイプ" data={lending.device.deviceType.name} />
-                        <PropertyItem label="OS" data={lending.device.os.name} />
-                        <PropertyItem label="メモリ" data={formatByteSize(lending.device.memory)} />
-                        <PropertyItem label="容量" data={formatByteSize(lending.device.capacity)} />
-                        <PropertyItem label="GPU" data={lending.device.hasGpu ? "有" : "無"} />
+                        {lending.device.os != null ? <PropertyItem label="OS" data={lending.device.os.name} /> : null}
+                        {lending.device.memory != null ? <PropertyItem label="メモリ" data={formatByteSize(lending.device.memory)} /> : null}
+                        {lending.device.capacity != null ? <PropertyItem label="容量" data={formatByteSize(lending.device.capacity)} /> : null}
+                        {lending.device.hasGpu != null ? <PropertyItem label="GPU" data={lending.device.hasGpu ? "有" : "無"} /> : null}
                     </div>
                 </div>
 
@@ -183,7 +207,11 @@ const LendingItem = ({ lending, deleteItem }: any) => {
                         </div>
                     </div>
                 </div>
+                {/* </div> */}
             </div >
+            <div className={style.remarks}>
+                <PropertyItem label="備考" data={lending.remarks} breakLine messageOnNull={"記入なし"} />
+            </div>
             <div className={style.buttonContainer}>
                 <Button className={style.button} type={buttonStates.warning} text="返却" noLinkMode onClick={warnBeforeReturn} />
                 <Button className={style.button} type={buttonStates.detail} text="詳細情報" link={`/lendings/${lending.id}`} />

@@ -20,7 +20,7 @@ namespace InventorySystem.Interfaces
 
         public bool DeviceTypeExists(int deviceTypeId);
 
-        public bool AddDeviceType(string name, string prefix, string emoji);
+        public bool AddDeviceType(string name, string prefix, string emoji,int isComputer);
 
         public bool DeleteDeviceType(int deviceTypeId);
 

@@ -51,6 +51,10 @@ const DeviceEdit = ({ searchParams }: any) => {
 
 
 
+    //////////////////////////////////////
+    // 項目表示変更のためのState
+    //////////////////////////////////////
+    const [isComputer, setIsComputer] = useState(false);
 
     //////////////////////////////////////
     // SelectのDeleteButtonState
@@ -80,16 +84,16 @@ const DeviceEdit = ({ searchParams }: any) => {
     // const [inventoryDateWarning, setInventoryDateWarning] = useState<string | boolean>(false);
     const [placeIdWarning, setPlaceIdWarning] = useState<string | boolean>(false);
     // const [makerIdWarning, setMakerIdWarning] = useState<string | boolean>(false);
-    // const [osIdWarning, setOsIdWarning] = useState<string | boolean>(false);
-    // const [memoryWarning, setMemoryWarning] = useState<string | boolean>(false);
-    // const [capacityWarning, setCapacityWarning] = useState<string | boolean>(false);
-    // const [hasGpuWarning, setHasGpuWarning] = useState<string | boolean>(false);
+    const [osIdWarning, setOsIdWarning] = useState<string | boolean>(false);
+    const [memoryWarning, setMemoryWarning] = useState<string | boolean>(false);
+    const [capacityWarning, setCapacityWarning] = useState<string | boolean>(false);
+    const [hasGpuWarning, setHasGpuWarning] = useState<string | boolean>(false);
 
     //////////////////////////////////////
     // 選択項目のリストを生成
     //////////////////////////////////////
     useEffect(() => {
-        // console.log("searchParams", searchParams)
+        // console.log("searchParams", searchParams) 
         if (Object.keys(searchParams).length > 0) {
             setDeviceId(searchParams.deviceId);
             setDeviceTypeId(searchParams.deviceTypeId);
@@ -106,6 +110,7 @@ const DeviceEdit = ({ searchParams }: any) => {
             setMemory(searchParams.memory);
             setCapacity(searchParams.capacity);
             setHasGpu(searchParams.hasGpu);
+
         }
 
         fetchAndSet(`${process.env.API_PATH}/api/Misc/deviceType`, setDeviceTypeOptions);
@@ -140,6 +145,39 @@ const DeviceEdit = ({ searchParams }: any) => {
             somethingMissing = true;
         } else {
             setPlaceIdWarning(false);
+        }
+
+        if (isComputer) {
+            console.log(osId)
+            if (osId != -1) {
+                setOsIdWarning(false);
+            } else {
+                somethingMissing = true;
+                setOsIdWarning("必須項目です。")
+            }
+
+            if (memory != null) {
+                setMemoryWarning(false);
+            } else {
+                somethingMissing = true;
+                setMemoryWarning("必須項目です。")
+            }
+
+
+            if (capacity != null) {
+                setCapacityWarning(false);
+            } else {
+                somethingMissing = true;
+                setCapacityWarning("必須項目です。");
+            }
+
+
+            if (hasGpu != null) {
+                setHasGpuWarning(false);
+            } else {
+                somethingMissing = true;
+                setHasGpuWarning("必須項目です。");
+            }
         }
 
         if (!somethingMissing) {
@@ -274,10 +312,27 @@ const DeviceEdit = ({ searchParams }: any) => {
                                     cancelMsg: "キャンセル",
                                     state: messageStates.needEmojiInput,
                                     onConfirm: () => {
-                                        if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
-                                            // console.log("Should be called")
-                                            addDeviceType(deviceTypeName, deviceTypePrefix, emojiToBase64(deviceTypeEmoji))
-                                        }
+                                        setPopup({
+                                            message: "この機器はコンピュータですか？（メモリ、ストレージ、OS、GPUなどを搭載していますか？）",
+                                            confirmMsg: "搭載している",
+                                            cancelMsg: "搭載していない",
+                                            state: messageStates.needSelection,
+                                            onConfirm: () => {
+                                                if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
+                                                    // console.log("Should be called")
+                                                    addDeviceType(deviceTypeName, deviceTypePrefix, (deviceTypeEmoji), true)
+                                                }
+                                            },
+                                            onCancel: () => {
+                                                if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
+                                                    // console.log("Should be called")
+                                                    addDeviceType(deviceTypeName, deviceTypePrefix, (deviceTypeEmoji), false)
+                                                }
+                                            },
+                                            onChange: (emoji: any) => {
+                                                deviceTypeEmoji = emojiToBase64(emoji.emoji);
+                                            },
+                                        })
                                     },
                                     onCancel: () => {
                                         setPopup(null)
@@ -502,6 +557,17 @@ const DeviceEdit = ({ searchParams }: any) => {
         }
     }, [deviceTypeId])
 
+    useEffect(() => {
+        // console.log(deviceTypeId)
+        if (deviceTypeId != -1) {
+            const dt: any = deviceTypeOptions.filter((dt: any) => dt.id == deviceTypeId)[0];
+            if (dt)
+                setIsComputer(dt.isComputer);
+        }
+    }, [deviceTypeId, deviceTypeOptions])
+
+
+
 
     useEffect(() => {
         // console.log(deviceTypeId)
@@ -562,10 +628,10 @@ const DeviceEdit = ({ searchParams }: any) => {
             "updateDate": new Date().toISOString(),
             "placeId": Number(placeId),
             "makerId": Number(makerId),
-            "osId": Number(osId),
-            "memory": Number(memory),
-            "capacity": Number(capacity),
-            "hasGpu": Number(hasGpu),
+            "osId": isComputer ? Number(osId) : null,
+            "memory": isComputer ? Number(memory) : null,
+            "capacity": isComputer ? Number(capacity) : null,
+            "hasGpu": isComputer ? Number(hasGpu) : null,
             "tempId": null
         }
 
@@ -610,10 +676,10 @@ const DeviceEdit = ({ searchParams }: any) => {
             "updateDate": new Date().toISOString(),
             "placeId": Number(placeId),
             "makerId": Number(makerId),
-            "osId": Number(osId),
-            "memory": Number(memory),
-            "capacity": Number(capacity),
-            "hasGpu": Number(hasGpu),
+            "osId": isComputer ? Number(osId) : null,
+            "memory": isComputer ? Number(memory) : null,
+            "capacity": isComputer ? Number(capacity) : null,
+            "hasGpu": isComputer ? Number(hasGpu) : null,
             "tempId": null
         }
 
@@ -662,10 +728,10 @@ const DeviceEdit = ({ searchParams }: any) => {
                 "updateDate": new Date().toISOString(),
                 "placeId": Number(placeId),
                 "makerId": Number(makerId),
-                "osId": Number(osId),
-                "memory": Number(memory),
-                "capacity": Number(capacity),
-                "hasGpu": Number(hasGpu)
+                "osId": isComputer ? Number(osId) : null,
+                "memory": isComputer ? Number(memory) : null,
+                "capacity": isComputer ? Number(capacity) : null,
+                "hasGpu": isComputer ? Number(hasGpu) : null
             })
         }).then((msg) => {
             // console.log(msg);
@@ -689,7 +755,7 @@ const DeviceEdit = ({ searchParams }: any) => {
         const uuid = generateUUID();
 
         const req = {
-            // "deviceId": "",
+            "deviceId": "",
             "deviceTypeId": Number(deviceTypeId),
             "brokenFlag": 0,
             "leaseStartDate": leaseStartDate,
@@ -701,14 +767,14 @@ const DeviceEdit = ({ searchParams }: any) => {
             "updateDate": new Date().toISOString(),
             "placeId": placeId,
             "makerId": Number(makerId),
-            "osId": Number(osId),
-            "memory": memory,
-            "capacity": capacity,
-            "hasGpu": Number(hasGpu),
+            "osId": isComputer ? Number(osId) : null,
+            "memory": isComputer ? Number(memory) : null,
+            "capacity": isComputer ? Number(capacity) : null,
+            "hasGpu": isComputer ? Number(hasGpu) : null,
             "tempId": uuid
         }
 
-        // console.log("req", req);
+        console.log("req", req);
 
         fetch(`${process.env.API_PATH}/api/Device`, {
             method: "POST",
@@ -739,8 +805,8 @@ const DeviceEdit = ({ searchParams }: any) => {
 
     }
 
-    const addDeviceType = (deviceTypeName: string, deviceTypePrefix: string, deviceTypeEmoji: string) => {
-        fetch(`${process.env.API_PATH}/api/Misc/addDeviceType/${deviceTypeName}&${deviceTypePrefix}&${deviceTypeEmoji}`, {
+    const addDeviceType = (deviceTypeName: string, deviceTypePrefix: string, deviceTypeEmoji: string, isComputer: boolean) => {
+        fetch(`${process.env.API_PATH}/api/Misc/addDeviceType/${deviceTypeName}&${deviceTypePrefix}&${deviceTypeEmoji}&${isComputer ? 1 : 0}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
@@ -777,7 +843,7 @@ const DeviceEdit = ({ searchParams }: any) => {
     }
 
     const addMaker = (makerName: string) => {
-        fetch(`${process.env.API_PATH}/api/Misc/addDeviceMaker/${makerName}`, {
+        fetch(`${process.env.API_PATH}/api/Misc/addMaker/${makerName}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
@@ -802,7 +868,7 @@ const DeviceEdit = ({ searchParams }: any) => {
     }
 
     const deleteMaker = () => {
-        fetch(`${process.env.API_PATH}/api/Misc/deleteDeviceMaker/${makerId}`, {
+        fetch(`${process.env.API_PATH}/api/Misc/deleteMaker/${makerId}`, {
             method: "DELETE",
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
@@ -1003,16 +1069,18 @@ const DeviceEdit = ({ searchParams }: any) => {
                     onChange={setMakerId} options={dmOption} initialValue={makerId} noValueLabel="メーカーを選択してください"
                     action={createDeviceMaker} actionDelete={makerDeleteButton ? deleteMakerActionButton : null} actionLabel={"+ 新しいメーカーを追加"} />
             </div>
-            <div>
-                <BytesInput className={style.input} label="メモリ" onChange={setMemory} initialValue={memory} noValueLabel={""} warning={""} />
-                <BytesInput className={style.input} label="容量" onChange={setCapacity} initialValue={capacity} noValueLabel={""} warning={""} />
-            </div>
-            <div>
+
+            {isComputer ?
+                (<div>
+                    <BytesInput className={style.input} label="メモリ" onChange={setMemory} initialValue={memory} noValueLabel={""} warning={memoryWarning} />
+                    <BytesInput className={style.input} label="容量" onChange={setCapacity} initialValue={capacity} noValueLabel={""} warning={capacityWarning} />
+                </div>) : null}
+            {isComputer ? <div>
                 <Selectable className={style.input} label="OS"
-                    onChange={setOsId} options={osOption} initialValue={osId} noValueLabel="OSを選択してください"
+                    onChange={setOsId} options={osOption} initialValue={osId} noValueLabel="OSを選択してください" warning={osIdWarning}
                     action={createOperationSystem} actionDelete={osDeleteButton ? deleteOperationSystemActionButton : null} actionLabel={"+ 新しいOSを追加"} />
-                <Selectable className={style.input} label="GPUの有無" onChange={setHasGpu} options={[{ label: "無", value: false }, { label: "有", value: true }]} initialValue={Boolean(hasGpu)} />
-            </div>
+                <Selectable className={style.input} label="GPUの有無" onChange={setHasGpu} options={[{ label: "無", value: false }, { label: "有", value: true }]} initialValue={Boolean(hasGpu)} warning={hasGpuWarning} />
+            </div> : null}
             <div>
                 <DatePicker className={style.input} label="棚卸日" placeholder="棚卸日" onChange={setInventoryDate} initialValue={inventoryDate} max={new Date().toISOString().split('T')[0]} />
                 <Selectable className={style.input} label="保管場所*"

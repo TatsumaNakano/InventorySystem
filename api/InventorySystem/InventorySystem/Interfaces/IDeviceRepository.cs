@@ -12,7 +12,6 @@ namespace InventorySystem.Interfaces
 
         public ICollection<Device> GetBrokenDevices();
         public ICollection<Device> GetNotBrokenDevices();
-
         public ICollection<Device> GetLeaseEndingDevices();
 
         public ICollection<Device> GetDevicesByPlace(int placeId);

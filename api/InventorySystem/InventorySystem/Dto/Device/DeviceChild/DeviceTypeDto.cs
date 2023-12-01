@@ -16,4 +16,5 @@ public partial class DeviceTypeDto
 
     public string Emoji {  get; set; }
 
+    public int IsComputer { get; set; }
 }

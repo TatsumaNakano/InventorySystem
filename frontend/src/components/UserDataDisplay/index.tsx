@@ -4,24 +4,43 @@ import { useEffect, useState } from "react";
 import { TupleType } from "typescript";
 import style from "./style.module.scss"
 import commonStyle from "@/components/styles/commom.module.scss"
-import Emoji from "../DeviceEmoji";
 import PropertyItem from "../PropertyItem";
 import { formatDate, convertMBtoGB, getAgeByBirthday } from "@/utility/utility";
 import Button from "../Button";
 import { buttonStates } from "@/utility/states";
 import UserEmoji from "../UserEmoji";
+import Loading from "../Loading";
 
-const UserDataDisplay = ({ searchString }: any) => {
-
+const UserDataDisplay = ({ searchString, onConnect }: any) => {
+    const [pageReady, setPageReady] = useState<boolean>(false);
+    const [loadStatus, setLoadStatus] = useState<string>("");
     const [userData, setUserData] = useState([]);
     const [filteredUserData, setFilteredUserData] = useState([]);
     useEffect(() => {
 
         const getUserData = async () => {
-            const query = await fetch(`${process.env.API_PATH}/api/User`);
-            const response = await query.json();
-            setUserData(response);
-            setFilteredUserData(response);
+            try {
+                const query = await fetch(`${process.env.API_PATH}/api/User`);
+
+                if (!query.ok) {
+
+                    setPageReady(false);
+                    setLoadStatus("サーバーに接続できませんでした。");
+                    throw new Error(`Failed to fetch data. Status: ${query.status}`);
+                }
+
+                const response = await query.json();
+                setUserData(response);
+                setFilteredUserData(response);
+                setPageReady(true);
+                onConnect();
+            } catch (error: any) {
+                // Handle the error here
+                console.error('Error fetching data:', error.message);
+                setPageReady(false);
+                setLoadStatus("サーバーに接続できませんでした。");
+                // You might want to display an error message to the user or log the error for further investigation
+            }
         }
 
         getUserData();
@@ -48,7 +67,7 @@ const UserDataDisplay = ({ searchString }: any) => {
         setFilteredUserData(filtered);
     }, [searchString])
 
-
+    if (!pageReady) return <Loading message={loadStatus} />
     return (
         <div className={style.userDataDisplay}>
             <UserList data={filteredUserData} />

@@ -9,9 +9,14 @@ import { formatDate, formatByteSize, emojiToBase64, base64ToEmoji } from "@/util
 import Button from "../Button";
 import { buttonStates } from "@/utility/states";
 import DeviceInfoSummery from "@/components/DeviceInfoSummery"
+import Loading from "../Loading";
 
 
-const DeviceDataDisplay = ({ searchString }: any) => {
+const DeviceDataDisplay = ({ searchString, onConnected }: any) => {
+
+
+    const [pageReady, setPageReady] = useState<boolean>(false);
+    const [loadStatus, setLoadStatus] = useState<string>("");
 
     const [deviceData, setDeviceData] = useState([]);
     const [filteredDeviceData, setFilteredDeviceData] = useState([]);
@@ -20,10 +25,27 @@ const DeviceDataDisplay = ({ searchString }: any) => {
     useEffect(() => {
 
         const getDeviceData = async () => {
-            const query = await fetch(`${process.env.API_PATH}/api/Device`);
-            const response = await query.json();
-            setDeviceData(response);
-            setFilteredDeviceData(response);
+            try {
+                const query = await fetch(`${process.env.API_PATH}/api/Device`);
+
+                if (!query.ok) {
+
+                    setPageReady(false);
+                    setLoadStatus("サーバーに接続できませんでした。");
+                    throw new Error(`Failed to fetch data. Status: ${query.status}`);
+                }
+                const response = await query.json();
+                setDeviceData(response);
+                setFilteredDeviceData(response);
+                setPageReady(true);
+                onConnected();
+            } catch (error: any) {
+                // Handle the error here
+                console.error('Error fetching data:', error.message);
+                setPageReady(false);
+                setLoadStatus("サーバーに接続できませんでした。");
+                // You might want to display an error message to the user or log the error for further investigation
+            }
         }
 
         getDeviceData();
@@ -45,6 +67,7 @@ const DeviceDataDisplay = ({ searchString }: any) => {
         setFilteredDeviceData(filtered);
     }, [searchString])
 
+    if (!pageReady) return <Loading message={loadStatus} />
     return (
         <div className={style.deviceDataDisplay}>
             <DeviceInfoSummery data={deviceData} />
@@ -150,10 +173,11 @@ const DetailPropertyInfo = ({ item }: any) => {
     var properties: any = [];
     properties.push(<PropertyItem label="タイプ" data={item.deviceType?.name} skipOnNull key={item.deviceId + "_type"} />);
     properties.push(<PropertyItem label="メーカー" data={item.maker?.name} skipOnNull key={item.deviceId + "_maker"} />);
-    properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull key={item.deviceId + "_os"} />);
-    properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull key={item.deviceId + "_memory"} />);
-    properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull key={item.deviceId + "_capacity"} />);
-    properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull key={item.deviceId + "_gpu"} />);
+    item.os != null ? properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull key={item.deviceId + "_os"} />) : null;
+    item.memory != null ? properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull key={item.deviceId + "_memory"} />) : null;
+    item.capacity != null ? properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull key={item.deviceId + "_capacity"} />) : null;
+    item.hasGpu != null ? properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull key={item.deviceId + "_gpu"} />) : null;
+
 
     return (
         <>

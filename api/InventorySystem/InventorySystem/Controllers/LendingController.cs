@@ -89,6 +89,21 @@ namespace InventorySystem.Controllers
             return Ok("デバイスの貸し出し手続き完了");
         }
 
+        [HttpPut("edit")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult EditLending([FromBody]LendingEditDto lending)
+        {
+            if (!_lendingRepository.LendingExist(lending.Id) || !ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var lendingMapped = _mapper.Map<Lending>(lending);
+            lendingMapped.TempId = null;
+            _lendingRepository.UpdateLending(lendingMapped);
+            return Ok("デバイスの返却手続き完了");
+        }
+
 
         [HttpPut("delete/{id}")]
         [ProducesResponseType(400)]

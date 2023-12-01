@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { TupleType } from "typescript";
 import style from "./style.module.scss"
 import commonStyle from "@/components/styles/commom.module.scss"
-import Emoji from "@/components/DeviceEmoji";
 import PropertyItem from "@/components/PropertyItem";
 import { formatDate, convertMBtoGB, getAgeByBirthday } from "@/utility/utility";
 import Button from "@/components/Button";

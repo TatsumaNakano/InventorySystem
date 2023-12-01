@@ -25,8 +25,10 @@ const LendingEdit = ({ searchParams }: any) => {
     const [availableDevices, setAvailableDevices] = useState([]);
     const [availableUsers, setAvailableUsers] = useState([]);
 
+    const [id, setId] = useState("");
     const [rentalStart, setRentalStart] = useState("");
     const [rentalEnd, setRentalEnd] = useState("");
+    const [returnedDate, setReturnedDate] = useState(null);
     const [deviceId, setDeviceId] = useState(-1);
     const [userId, setUserId] = useState(-1);
     const [remarks, setRemarks] = useState(null);
@@ -40,8 +42,10 @@ const LendingEdit = ({ searchParams }: any) => {
         const id = pathname.substring(pathname.lastIndexOf("&") + 1);
         // console.log(searchParams.deviceId);
         if (!editable) {
+            searchParams.id ? setId(searchParams.id) : null
             searchParams.rentalStart ? setRentalStart(searchParams.rentalStart) : setRentalStart(new Date().toISOString());
             searchParams.rentalEnd ? setRentalEnd(searchParams.rentalEnd) : null;
+            searchParams.returnedDate ? setReturnedDate(searchParams.returnedDate) : null;
             searchParams.deviceId ? setDeviceId(Number(searchParams.deviceId)) : null
             searchParams.userId ? setUserId(Number(searchParams.userId)) : null;
             searchParams.remarks ? setRemarks(searchParams.remarks) : null;
@@ -112,19 +116,117 @@ const LendingEdit = ({ searchParams }: any) => {
 
     }
 
+
+
+    const editLending = () => {
+
+        const body = {
+            "id": id,
+            "rentalStart": rentalStart,
+            "rentalEnd": rentalEnd,
+            "returnedDate": returnedDate,
+            "deleteFlag": 0,
+            "deviceId": deviceId,
+            "userId": userId,
+            "remarks": remarks,
+            "tempId": ""
+        }
+
+        console.log(body)
+
+        fetch(`${process.env.API_PATH}/api/Lending/edit`, {
+            method: "PUT",
+            headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                'Content-Type': 'application/json;charset=UTF-8',
+            },
+            body: JSON.stringify(body)
+        }).then((msg) => {
+
+            push(`/lendings/${id}`);
+            // console.log(msg);
+            // fetch(`${process.env.API_PATH}/api/Lending/tempIdToLendingId/${uuid}`)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         push(`/lendings/${data}`);
+            //     }).catch((err) => {
+            //         console.error(err);
+            //         setPopup({
+            //             message: "エラーが発生しました。\n\n" + err,
+            //             confirmMsg: "OK",
+            //             cancelMsg: "キャンセル",
+            //             state: messageStates.needConfirm,
+            //             onConfirm: () => { setPopup(null); },
+            //             onCancel: () => { setPopup(null); }
+            //         });
+            //     });
+
+        }).catch((err) => {
+            console.error(err);
+            setPopup({
+                message: "エラーが発生しました。\n\n" + err,
+                confirmMsg: "OK",
+                cancelMsg: "キャンセル",
+                state: messageStates.needConfirm,
+                onConfirm: () => { setPopup(null); },
+                onCancel: () => { setPopup(null); }
+            });
+        })
+
+    }
+
+    const warnBeforeReturn = () => {
+        setPopup({
+            message: `機器の返却をします。よろしいですか？`,
+            confirmMsg: "返却する",
+            cancelMsg: "キャンセル",
+            state: messageStates.needSelection,
+            onConfirm: () => { returnLendingDevice() },
+            onCancel: () => setPopup(null)
+        })
+    }
+
+
+    const returnLendingDevice = () => {
+        fetch(`${process.env.API_PATH}/api/Lending/delete/${id}`, {
+            method: "PUT",
+            headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                'Content-Type': 'application/json;charset=UTF-8',
+            }
+        }).then((msg) => {
+            console.log(msg);
+            // console.log(deleteItem)
+            push(`/`);
+            setPopup(null);
+        }).catch((err) => {
+            console.log(err);
+            setPopup({
+                message: "エラーが発生しました。\n\n" + err,
+                confirmMsg: "OK",
+                cancelMsg: "キャンセル",
+                state: messageStates.needConfirm,
+                onConfirm: () => { setPopup(null); },
+                onCancel: () => { setPopup(null); }
+            });
+        });
+    }
+
+
+
     const deviceOptions = availableDevices.map((device: any) => {
         return ({
-            label: device.deviceId,
+            label: `${device.deviceId} ${device.deviceType.name}`,
             value: device.id,
         });
     })
 
     const userOptions = availableUsers.map((user: any) => {
         return ({
-            label: `${user.lastName} ${user.firstName}`,
+            label: `${user.userId} - ${user.lastName} ${user.firstName}`,
             value: user.id,
         });
-    })
+    }).sort()
 
     // console.log(deviceOptions);
 
@@ -165,8 +267,8 @@ const LendingEdit = ({ searchParams }: any) => {
                     {editable ?
                         <Button className={style.onebutton} type={buttonStates.positive} text="貸出する" onClick={addNewLending} /> :
                         <>
-                            <Button className={style.twobutton} type={buttonStates.warning} text="返却する" onClick={() => { }} />
-                            <Button className={style.twobutton} type={buttonStates.detail} text="変更を保存する" onClick={() => { }} />
+                            <Button className={style.twobutton} type={buttonStates.warning} text="返却する" onClick={warnBeforeReturn} />
+                            <Button className={style.twobutton} type={buttonStates.detail} text="変更を保存する" onClick={editLending} />
                         </>
                     }
                 </div>
