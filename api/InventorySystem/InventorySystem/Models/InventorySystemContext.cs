@@ -71,6 +71,10 @@ public partial class InventorySystemContext : DbContext
                 .HasMaxLength(6)
                 .IsUnicode(false)
                 .HasColumnName("device_id");
+            entity.Property(e => e.TempId)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasColumnName("temp_id");
             entity.Property(e => e.DeviceTypeId).HasColumnName("device_type_id");
             entity.Property(e => e.HasGpu).HasColumnName("has_gpu");
             entity.Property(e => e.InventoryDate)
@@ -148,6 +152,9 @@ public partial class InventorySystemContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(10)
                 .HasColumnName("name");
+            entity.Property(e => e.Emoji)
+                .HasMaxLength(30)
+                .HasColumnName("emoji");
             entity.Property(e => e.NextVersion).HasColumnName("next_version");
         });
 
@@ -183,6 +190,12 @@ public partial class InventorySystemContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("rental_start");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.Property(e => e.TempId)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .HasColumnName("temp_id");
+
 
             entity.HasOne(d => d.Device).WithMany(p => p.Lendings)
                 .HasForeignKey(d => d.DeviceId)

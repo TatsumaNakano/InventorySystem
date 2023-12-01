@@ -18,9 +18,30 @@
 
 .textarea {
     width: 100%;
+
+    textarea {
+        height: 150px;
+    }
+
 }
 
 .button {
     width: 180px;
     margin: 0 auto;
+}
+
+.onebutton {
+    margin: 0 auto;
+    width: 180px;
+}
+
+.twobutton {
+    // margin: 0 auto;
+    width: 180px;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.618rem !important;
 }

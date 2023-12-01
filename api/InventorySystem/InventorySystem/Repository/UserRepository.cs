@@ -206,6 +206,7 @@ namespace InventorySystem.Repository
             _context.Add(user);
             return Save();
         }
+
         public bool ActivateUser(User user)
         {
             user.Deactivated = 0;

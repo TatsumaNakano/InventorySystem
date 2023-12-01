@@ -54,4 +54,6 @@ public partial class Device
     public virtual OperationSystem? Os { get; set; }
 
     public virtual StoragePlace Place { get; set; } = null!;
+
+    public string? TempId { get; set; }
 }

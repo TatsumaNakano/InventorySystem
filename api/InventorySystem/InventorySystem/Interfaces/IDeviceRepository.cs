@@ -21,10 +21,16 @@ namespace InventorySystem.Interfaces
 
         public ICollection<Device> GetDevicesByType(int typeId);
 
+        public bool DeactivateDevice(Device targetDevice);
+
+        public bool ActivateDevice(Device targetDevice);
+        
+        public string GetDeviceIdByTempId(string tempId);
+
         public bool DeviceExist(int id);
         public bool DeviceExist(string deviceid);
         public bool AddDevice(Device device);
-        public bool DeleteDevice(Device device);
+        //public bool DeleteDevice(Device device);
 
         public bool EditDevice(Device device);
 

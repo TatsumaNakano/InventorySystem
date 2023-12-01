@@ -1,0 +1,35 @@
+.messageBubble {
+    position: absolute;
+    pointer-events: none;
+    background-color: var(--positive-blue);
+    padding: 0.381rem;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+    label {
+        text-align: center;
+    }
+
+    label:first-child {
+        font-size: 1rem;
+        font-weight: 300;
+    }
+
+    label:last-child {
+        font-size: 0.618rem;
+        font-weight: 700;
+    }
+}
+
+.fadeIn {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.fadeOut {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}

@@ -3,6 +3,7 @@
 import MessagePopup from '@/components/MessagePopup'
 import { useState } from 'react';
 import { RecoilRoot } from 'recoil';
+import MessageBubble from '../messageBubble';
 
 const Main = ({ children, }: { children: React.ReactNode }) => {
 
@@ -11,6 +12,7 @@ const Main = ({ children, }: { children: React.ReactNode }) => {
             <RecoilRoot>
                 {children}
                 <MessagePopup />
+                <MessageBubble />
             </RecoilRoot>
         </main>
     );

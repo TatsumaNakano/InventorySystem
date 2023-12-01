@@ -1,6 +1,6 @@
 :root {
   --listitem-background: #F9F9F9;
-  --listitem-deactivated-background: #c9c9c9;
+  --listitem-deactivated-background: #e4e4e4;
   --border-color: #E2E2E2;
   --black: #0A0A0A;
   --white: #FFFFFF;
@@ -8,6 +8,10 @@
   --light-gray: #c2c2c2;
   --lighter-gray: #e6e6e6;
 
+  --item-shadow: drop-shadow(0px 5px 2px #eeeeee);
+
+  --deactivated-input-background: #f4f4f4;
+  --deactivated-input-color: #b7b7b7;
   --positive-blue: #27D6FF;
   --warning-red: #FF294D;
   --selection-blue: #b0f1ff;
@@ -31,7 +35,7 @@ body {
 }
 
 main {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   margin-top: 100px;
   margin-bottom: 50px;

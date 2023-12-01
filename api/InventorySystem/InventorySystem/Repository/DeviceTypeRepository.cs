@@ -11,6 +11,7 @@ namespace InventorySystem.Repository
         {
             _context = context;            
         }
+
         public ICollection<DeviceType> GetAllDeviceTypes()
         {
             return _context.DeviceTypes.OrderBy(dt => dt.Id).ToList();
@@ -33,11 +34,49 @@ namespace InventorySystem.Repository
             return GetDevicePrefix(deviceTypeId)+GetNextVersion(deviceTypeId).ToString("0000");
         }
 
+        public bool NameAlreadyExists(string name)
+        {
+            return _context.DeviceTypes.Any(dt => dt.Name == name);
+        }
+
+        public bool PrefixAlreadyExists(string prefix)
+        {
+            return _context.DeviceTypes.Any(dt => dt.DevicePrefix == prefix);
+        }
+
+
+        public bool DeviceTypeExists(int deviceTypeId)
+        {
+            return _context.DeviceTypes.Any(dt => dt.Id == deviceTypeId);
+        }
+
+        public bool AddDeviceType(string name, string prefix, string emoji)
+        {
+            DeviceType deviceType = new DeviceType() { Name = name, DevicePrefix = prefix, Emoji=emoji, NextVersion=1};
+            _context.DeviceTypes.Add(deviceType);
+
+            return Save();
+        }
+
+        public bool DeleteDeviceType(int deviceTypeId)
+        {
+            DeviceType deviceType = _context.DeviceTypes.Where(dt => dt.Id == deviceTypeId).FirstOrDefault();
+            _context.DeviceTypes.Remove(deviceType);
+
+            return Save();
+        }
+
+        public bool HasAnyDeviceOnThisDeviceType(int deviceTypeId)
+        {
+            return _context.Devices.Any(d => d.DeviceTypeId == deviceTypeId);
+        }
+
 
         public bool IncrementVersion(int deviceTypeId)
         {
             DeviceType deviceType = _context.DeviceTypes.SingleOrDefault(dt => dt.Id == deviceTypeId);
             deviceType.NextVersion++;
+            Console.WriteLine(deviceType);
             _context.Update(deviceType);
             return Save();
         }

@@ -18,6 +18,8 @@ namespace InventorySystem.Dto
 
         public string? Remarks { get; set; }
 
+        public string? TempId { get; set; }
+
         public virtual LendingDeviceDto Device { get; set; } = null!;
 
         public virtual LendingUserDto User { get; set; } = null!;

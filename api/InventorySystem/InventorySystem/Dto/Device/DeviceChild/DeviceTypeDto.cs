@@ -14,4 +14,6 @@ public partial class DeviceTypeDto
 
     public int NextVersion { get; set; }
 
+    public string Emoji {  get; set; }
+
 }

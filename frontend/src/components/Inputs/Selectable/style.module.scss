@@ -1,9 +1,34 @@
 .selectable {
-    width: max-content;
+    width: 100%;
     // *[class^="css-"],
     // *[class*="css-"] {
     // display: none;
 
     // }
+    position: relative;
 
+    select {
+        width: 100%;
+    }
+
+    button {
+        display: inline-block;
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        min-width: 0.818rem;
+        min-height: 0.818rem;
+        max-width: 0.818rem;
+        max-height: 0.818rem;
+        font-size: 0.618rem;
+        font-weight: 900;
+        line-height: 0;
+        border: none;
+        border-radius: 999999999px;
+        padding: 0;
+        background: var(--dark-gray);
+        color: white;
+        cursor: pointer;
+    }
 }

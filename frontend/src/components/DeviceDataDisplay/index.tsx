@@ -4,35 +4,56 @@ import { useEffect, useState } from "react";
 import { TupleType } from "typescript";
 import style from "./style.module.scss"
 import commonStyle from "@/components/styles/commom.module.scss"
-import DeviceEmoji from "../DeviceEmoji";
 import PropertyItem from "../PropertyItem";
-import { formatDate, formatByteSize } from "@/utility/utility";
+import { formatDate, formatByteSize, emojiToBase64, base64ToEmoji } from "@/utility/utility";
 import Button from "../Button";
 import { buttonStates } from "@/utility/states";
+import DeviceInfoSummery from "@/components/DeviceInfoSummery"
 
-const DeviceDataDisplay = () => {
+
+const DeviceDataDisplay = ({ searchString }: any) => {
 
     const [deviceData, setDeviceData] = useState([]);
+    const [filteredDeviceData, setFilteredDeviceData] = useState([]);
+
+
     useEffect(() => {
 
-        const getdeviceData = async () => {
+        const getDeviceData = async () => {
             const query = await fetch(`${process.env.API_PATH}/api/Device`);
             const response = await query.json();
             setDeviceData(response);
+            setFilteredDeviceData(response);
         }
 
-        getdeviceData();
+        getDeviceData();
     }, []);
+
+
+    //検索文字列の変更ごとに呼び出し
+    useEffect(() => {
+        const searchLower = searchString.toLowerCase();
+        const filtered = deviceData.filter((obj: any) => {
+            const deviceIdMatch = obj.deviceId.toLowerCase().includes(searchLower);
+            const makerNameMatch = obj.maker.name.toLowerCase().includes(searchLower);
+            const placeNameMatch = obj.place.name.toLowerCase().includes(searchLower);
+            const deviceTypeNameMatch = obj.deviceType.name.toLowerCase().includes(searchLower);
+
+            return deviceIdMatch || makerNameMatch || placeNameMatch || deviceTypeNameMatch;
+        });
+
+        setFilteredDeviceData(filtered);
+    }, [searchString])
 
     return (
         <div className={style.deviceDataDisplay}>
-            <DeviceList data={deviceData} />
+            <DeviceInfoSummery data={deviceData} />
+            <DeviceList data={filteredDeviceData} />
         </div>
     );
 }
 
 export default DeviceDataDisplay;
-
 
 
 const DeviceList = ({ data }: any) => {
@@ -48,16 +69,40 @@ const DeviceList = ({ data }: any) => {
 
 
 const DeviceItem = ({ item }: any) => {
-    console.log(item);
+    // console.log((item.registrationDate));
+    // console.log(formatDate(item.registrationDate));
+    var rentalButton = (() => {
+        if (item.currentUser == null) {
+            if (item.brokenFlag == 0 && item.deleteFlag == 0) {
+                return <Button className={style.button} type={buttonStates.positive} text="貸し出す" link={{
+                    pathname: "/lendings/edit",
+                    query: { deviceId: item.id }
+                }} />
+            } else {
+                if (item.deleteFlag == 1) {
+                    return <Button className={style.button} type={buttonStates.disabled} text={`削除済み`} link="/" />;
+                }
+                else if (item.brokenFlag == 1 && item.deleteFlag == 0) {
+                    return <Button className={style.button} type={buttonStates.disabled} text={`故障中`} link="/" />;
+                }
+
+            }
+        } else {
+            return <Button className={style.button} type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} link="/" />
+        }
+    })()
+
     return (
-        <li className={style.deviceItem}>
+        <li className={`${style.deviceItem} ${Boolean(item.brokenFlag) || Boolean(item.deleteFlag) ? style.disabled : style.enabled}`}>
             <div className={style.info}>
                 {/* Left Section */}
                 <div className={style.left}>
                     <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
                         {/* Icon Emoji */}
                         <h4 className={style.emoji}>
-                            <DeviceEmoji type={item.deviceType.id} />
+                            {base64ToEmoji(item.deviceType.emoji)}
+                            {item.deleteFlag == 1 ? <label className={style.deleteFlag}>❌</label> : null}
+                            {item.deleteFlag == 0 && item.brokenFlag == 1 ? <label className={style.brokenFlag}>🛠️</label> : null}
                         </h4>
 
                         {/* Name and Info */}
@@ -76,7 +121,6 @@ const DeviceItem = ({ item }: any) => {
 
                 </div>
 
-
                 {/* Right Section */}
                 <div className={style.right}>
                     <div>{/* 登録更新 */}
@@ -88,18 +132,13 @@ const DeviceItem = ({ item }: any) => {
                         <PropertyItem label="リース期日" data={formatDate(item.leaseEndDate)} />
                     </div>
                     <div>{/* 備考 */}
-                        <PropertyItem label="備考" data={item.remarks} breakLine messageOnNull="記入なし" />
+                        <PropertyItem label="備考" data={item.remarks != null ? item.remarks.slice(0, 100) + "..." : ""} breakLine messageOnNull="記入なし" />
                     </div>
 
                 </div>
             </div>
             <div className={style.buttonContainer}>
-                {
-                    item.currentUser == null ?
-                        <Button className={style.button} type={buttonStates.positive} text="貸し出す" link={{ pathname: `/lendings/edit`, query: item }} /> :
-                        <Button className={style.button} type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} />
-                }
-
+                {rentalButton}
                 <Button className={style.button} type={buttonStates.detail} text="詳細情報" link={`/devices/${item.deviceId}`} />
             </div>
         </li>
@@ -109,12 +148,12 @@ const DeviceItem = ({ item }: any) => {
 const DetailPropertyInfo = ({ item }: any) => {
 
     var properties: any = [];
-    properties.push(<PropertyItem label="タイプ" data={item.deviceType?.name} skipOnNull />);
-    properties.push(<PropertyItem label="メーカー" data={item.maker?.name} skipOnNull />);
-    properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull />);
-    properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull />);
-    properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull />);
-    properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull />);
+    properties.push(<PropertyItem label="タイプ" data={item.deviceType?.name} skipOnNull key={item.deviceId + "_type"} />);
+    properties.push(<PropertyItem label="メーカー" data={item.maker?.name} skipOnNull key={item.deviceId + "_maker"} />);
+    properties.push(<PropertyItem label="OS" data={item.os.name} skipOnNull key={item.deviceId + "_os"} />);
+    properties.push(<PropertyItem label="メモリ" data={formatByteSize(item.memory)} skipOnNull key={item.deviceId + "_memory"} />);
+    properties.push(<PropertyItem label="容量" data={formatByteSize(item.capacity)} skipOnNull key={item.deviceId + "_capacity"} />);
+    properties.push(<PropertyItem label="GPU" data={(item.hasGpu == 1) ? "有" : "無"} skipOnNull key={item.deviceId + "_gpu"} />);
 
     return (
         <>

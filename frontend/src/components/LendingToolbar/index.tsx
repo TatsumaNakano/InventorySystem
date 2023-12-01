@@ -9,7 +9,10 @@ import { buttonStates } from "@/utility/states";
 const LendingToolbar = () => {
     return (
         <div className={commonStyle.toolbar}>
-            <Button className={style.button} type={buttonStates.positive} text="新規貸出" link="/lendings/edit" />
+            <h1>貸し出し状況</h1>
+            <div>
+                <Button className={style.button} type={buttonStates.positive} text="新規貸出" link="/lendings/edit" />
+            </div>
         </div>
     );
 }

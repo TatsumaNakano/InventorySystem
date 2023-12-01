@@ -1,8 +1,12 @@
 import { emailRegex } from "./regex";
+import { parseISO } from "date-fns"
+// import ja from 'date-fns/local/ja'
 
 export const formatDate = (date: string) => {
-    const dateObj = new Date(Date.parse(date));
-    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+    const dateObj = parseISO(date)
+    // const dateObj = new Date(Date.parse(date));
+    // console.log("dateObj.getDay()", dateObj.getDay());
+    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
 }
 
 export const formatDateForJson = (date: Date) => {
@@ -11,7 +15,7 @@ export const formatDateForJson = (date: Date) => {
 }
 
 export const convertMBtoGB = (sizeInMB: number) => {
-    return sizeInMB / 1000;
+    return sizeInMB / 1024;
 }
 
 export const formatByteSize = (sizeInMB: number) => {
@@ -19,8 +23,8 @@ export const formatByteSize = (sizeInMB: number) => {
     const units = ["MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let index = 0;
 
-    while (sizeInMB >= 1000) {
-        sizeInMB /= 1000;
+    while (sizeInMB >= 1024) {
+        sizeInMB /= 1024;
         index++;
     }
 
@@ -78,3 +82,52 @@ export const validateUserId = (input: string) => {
     return /^[A-Za-z]\d{4}$/.test(input);
 };
 
+export const generateUUID = () => {
+    return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+
+export const getJSTDateString = (date: Date) => {
+
+    const options = {
+        timeZone: 'Asia/Tokyo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    };
+
+    const japanFormattedDate = new Intl.DateTimeFormat('ja-JP', options as any).format(date);
+
+    const formattedString = `(${japanFormattedDate})`;
+    return (formattedString);
+}
+
+export const getJSTDateTimeString = (date: Date) => {
+
+    const options = {
+        timeZone: 'Asia/Tokyo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+    };
+
+    const japanFormattedDateTime = new Intl.DateTimeFormat('ja-JP', options as any).format(date);
+
+    const formattedString = `(${japanFormattedDateTime})`;
+    return (formattedString);
+}
+
+
+export const emojiToBase64 = (emoji: string) => {
+    return Buffer.from(emoji).toString('base64');
+}
+
+export const base64ToEmoji = (base64: any) => {
+    return Buffer.from(base64, 'base64').toString('utf-8');
+}

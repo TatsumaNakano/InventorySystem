@@ -4,6 +4,53 @@
     width: 100%;
     position: fixed;
     top: 0;
+    z-index: 9;
+
+    div {
+        height: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+
+        div.logo {
+            height: 100%;
+            margin: 0;
+            font-size: 0.6rem;
+
+            * {
+                color: white;
+                text-decoration: none;
+            }
+        }
+
+        div.menu {
+            height: 100%;
+            margin-right: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            a {
+                text-decoration: none;
+                margin-left: 1rem;
+                font-size: 1rem;
+                color: white;
+            }
+        }
+    }
+
+}
+
+.headerSide {
+    background-color: rgb(112, 174, 255);
+    height: 100vh;
+    width: 200px;
+    position: fixed;
+    top: 0;
+
+    left: 0;
 
     div {
         height: 100%;

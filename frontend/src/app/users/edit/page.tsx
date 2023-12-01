@@ -14,7 +14,7 @@ import TextArea from "@/components/Inputs/TextArea";
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from "recoil";
 import { messageStates } from "@/components/MessagePopup";
-import { emailRegex } from "@/utility/regex";
+// import { emailRegex } from "@/utility/regex";
 
 interface sqlInterface {
     id: Number,
@@ -47,6 +47,8 @@ const UserEdit = ({ searchParams }: any) => {
     const [popup, setPopup] = useRecoilState(popupState); //確認画面ポップアップのState
     const [params, setParams] = useState<sqlInterface>();//SearchParamsをAPI用のオブジェクトとして格納する
 
+    const edit = Object.keys(searchParams).length > 0;
+
     //////////////////////////////////////
     // DBから取得したリスト
     //////////////////////////////////////
@@ -74,8 +76,9 @@ const UserEdit = ({ searchParams }: any) => {
     const [telNumber, setTelNumber] = useState("");
     const [email, setEmail] = useState("");
     const [remarks, setRemarks] = useState(null);
+    const [deactivated, setDeactivated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(null);
-    const [leftDate, setLeftDate] = useState(null);
+    // const [leftDate, setLeftDate] = useState(null);
 
 
     //////////////////////////////////////
@@ -101,7 +104,7 @@ const UserEdit = ({ searchParams }: any) => {
     useEffect(() => {
 
         // 編集の場合
-        if (Object.keys(searchParams).length > 0) {
+        if (edit) {
             const firstLoad = params == null;
             // console.log("searchParams", searchParams)
             if (firstLoad) setParams(searchParams);
@@ -120,6 +123,7 @@ const UserEdit = ({ searchParams }: any) => {
             setTelNumber(firstLoad ? searchParams.telNumber : params.telNumber);
             setEmail(firstLoad ? searchParams.email : params.email);
             setRemarks(firstLoad ? searchParams.remarks : params.remarks);
+            setDeactivated(firstLoad ? searchParams.deactivated : params.deactivated);
             setIsAdmin(firstLoad ? searchParams.isAdmin : params.isAdmin);
         }
 
@@ -133,12 +137,12 @@ const UserEdit = ({ searchParams }: any) => {
 
 
     //////////////////////////////////////
-    // ボタン押下時の関数
+    // APIリクエスト前の変数チェック。警告の表示Stateの操作
     //////////////////////////////////////
     const validateInputs = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }) => {
 
         var somethingMissing = false;//入力に不備があった場合のフラグ
-        if (!userId) { somethingMissing = true; console.log("userId Missing!", userId) };
+
         if (!sexId) { somethingMissing = true; console.log("sexId Missing!", sexId) };
         if (!deptId) { somethingMissing = true; console.log("deptId Missing!", deptId) };
         if (!posId) { somethingMissing = true; console.log("posId Missing!", posId) };
@@ -151,12 +155,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!userId) {//入力なし
             setUserIdWarning("必須項目です。");
+            console.log("userId", userId)
             somethingMissing = true;
         } else {//入力あり
             if (validateUserId(userId)) {//問題なし
                 setUserIdWarning(false);
             } else {//形式に問題あり
                 setUserIdWarning("形式を確認してください。");
+                console.log("userId", userId)
                 somethingMissing = true;
             }
         }
@@ -167,6 +173,7 @@ const UserEdit = ({ searchParams }: any) => {
         if (birthday == null || birthday == "" || birthday == "T00:00:00") {//入力なし
             if (ageDeprecated == null) {
                 setBirthdayWarning("必須項目です。");
+                console.log("birthday", birthday);
                 somethingMissing = true;
             } else {//古いシステムから来た年齢データが存在する場合は誕生日の入力を省く。（他の設定を変更するときに誕生日がないがために変更の保存が出来なくなるため。）
                 setBirthdayWarning(false);
@@ -180,6 +187,7 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!sexId) {//入力なし
             setSexIdWarning("必須項目です。");
+            console.log("sexId", sexId);
             somethingMissing = true;
         } else {//入力あり
             setSexIdWarning(false);
@@ -190,12 +198,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!lastName) {//入力なし
             setLastNameWarning("必須項目です。");
+            console.log("lastName", lastName);
             somethingMissing = true;
         } else {
             if (validateNameString(lastName)) {//問題なし
                 setLastNameWarning(false);
             } else {//形式に問題あり
                 setLastNameWarning("不正な文字が使用されています。");
+                console.log("lastName", lastName);
                 somethingMissing = true;
             }
         }
@@ -205,12 +215,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!firstName) {//入力なし
             setFirstNameWarning("必須項目です。");
+            console.log("firstName", firstName);
             somethingMissing = true;
         } else {
             if (validateNameString(firstName)) {//問題なし
                 setFirstNameWarning(false);
             } else {//形式に問題あり
                 setFirstNameWarning("不正な文字が使用されています。");
+                console.log("firstName", firstName);
                 somethingMissing = true;
             }
         }
@@ -220,12 +232,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!kanaLastName) {//入力なし
             setKanaLastNameWarning("必須項目です。");
+            console.log("kanaLastName", kanaLastName);
             somethingMissing = true;
         } else {
             if (validateKatakana(kanaLastName)) {//問題なし
                 setKanaLastNameWarning(false);
             } else {//形式に問題あり
                 setKanaLastNameWarning("カタカナ以外の文字は使えません。");
+                console.log("kanaLastName", kanaLastName);
                 somethingMissing = true;
             }
         }
@@ -235,12 +249,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!kanaFirstName) {//入力なし
             setKanaFirstNameWarning("必須項目です。");
+            console.log("kanaFirstName", kanaFirstName);
             somethingMissing = true;
         } else {
             if (validateKatakana(kanaFirstName)) {//問題なし
                 setKanaFirstNameWarning(false);
             } else {//形式に問題あり
                 setKanaFirstNameWarning("カタカナ以外の文字は使えません。");
+                console.log("kanaFirstName", kanaFirstName);
                 somethingMissing = true;
             }
         }
@@ -250,6 +266,7 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (deptId == -1) {
             setDeptIdWarning("部署を選択してください。");
+            console.log("deptId", deptId);
             somethingMissing = true;
         } else {
             setDeptIdWarning(false);
@@ -260,6 +277,7 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (posId == -1) {
             setPosIdWarning("役職を選択してください。");
+            console.log("posId", posId);
             somethingMissing = true;
         } else {
             setPosIdWarning(false);
@@ -271,12 +289,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!telNumber) {//入力なし
             setTelNumberWarning("必須項目です。");
+            console.log("telNumber", telNumber);
             somethingMissing = true;
         } else {
             if (validateTelNumber(telNumber)) {//問題なし
                 setTelNumberWarning(false);
             } else {//形式に問題あり
                 setTelNumberWarning("半角数字のみ使用可能です。");
+                console.log("telNumber", telNumber);
                 somethingMissing = true;
             }
         }
@@ -287,12 +307,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!email) {//入力なし
             setEmailWarning("必須項目です。");
+            console.log("email", email);
             somethingMissing = true;
         } else {//入力あり
             if (validateEmail(email)) {//問題なし
                 setEmailWarning(false);
             } else {//形式に問題あり
                 setEmailWarning("形式を確認してください。");
+                console.log("email", email);
                 somethingMissing = true;
             }
         }
@@ -303,13 +325,14 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         if (!isAdmin) {//入力なし
             setIsAdminWarning("必須項目です。");
+            console.log("isAdmin", isAdmin);
             somethingMissing = true;
         } else {//入力あり
             setIsAdminWarning("形式を確認してください。");
-            somethingMissing = true;
-
+            console.log("isAdmin", isAdmin);
         }
 
+        console.log(somethingMissing)
 
 
         setIsAdminWarning(isAdmin == -1 || isAdmin == null || isAdmin == undefined);
@@ -317,13 +340,32 @@ const UserEdit = ({ searchParams }: any) => {
         if (!somethingMissing) createOrModify(onsuccess, onerror);
     }
 
+    //////////////////////////////////////
+    // ポップアップメッセージ
+    //////////////////////////////////////
+
     const confirmBeforeDeactivate = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }) => {
         setPopup({
-            message: `本当にユーザを削除しますか？`,
-            confirmMsg: "削除する",
+            message: `本当にユーザを無効にしますか？`,
+            confirmMsg: "無効にする",
             cancelMsg: "キャンセル",
             state: messageStates.needSelection,
-            onConfirm: () => deactivateUser(onsuccess, onerror),
+            onConfirm: () => { getLeftdate(onsuccess, onerror) },
+            onCancel: () => setPopup(null)
+        });
+    }
+
+    const getLeftdate = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }) => {
+
+        var leftDateString = "";//SetStateがうまく動かなかったので関数内で変数を宣言。。
+
+        setPopup({
+            message: `退社した場合は退社日を入力してください。`,
+            confirmMsg: "OK",
+            cancelMsg: "キャンセル",
+            state: messageStates.needDateInput,
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => { leftDateString = e.target.value },
+            onConfirm: () => { deactivateUser(onsuccess, onerror, leftDateString) },
             onCancel: () => setPopup(null)
         });
     }
@@ -339,8 +381,11 @@ const UserEdit = ({ searchParams }: any) => {
         });
     }
 
-    const deactivateUser = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }) => {
-
+    //////////////////////////////////////
+    // APIリクエスト
+    //////////////////////////////////////
+    const deactivateUser = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }, leftDateString: any) => {
+        console.log(leftDateString)
         const body: sqlInterface = {
             "id": Number(id),
             "userId": userId,
@@ -361,7 +406,7 @@ const UserEdit = ({ searchParams }: any) => {
             "deactivated": 1,
             "registrationDate": params?.registrationDate,
             "updateDate": new Date().toISOString(),
-            "leftDate": leftDate
+            "leftDate": leftDateString == "" ? null : leftDateString
         }
 
         fetch(`https://localhost:7070/api/User/deactivate/${userId}`, {
@@ -374,6 +419,7 @@ const UserEdit = ({ searchParams }: any) => {
         }).then((msg) => {
             console.log(msg);
             push(`/users/${userId}`);
+            setPopup(null);
             // onsuccess(msg);
         }).catch((err) => {
             console.log(err);
@@ -383,6 +429,7 @@ const UserEdit = ({ searchParams }: any) => {
 
     const activateUser = (onsuccess = (msg: any) => { }, onerror = (err: any) => { }) => {
 
+        console.log(params?.leftDate);
         const body: sqlInterface = {
             "id": Number(id),
             "userId": userId,
@@ -403,7 +450,7 @@ const UserEdit = ({ searchParams }: any) => {
             "deactivated": 0,
             "registrationDate": params?.registrationDate,
             "updateDate": new Date().toISOString(),
-            "leftDate": leftDate
+            "leftDate": params?.leftDate == "" ? null : params?.leftDate,
         }
 
         fetch(`https://localhost:7070/api/User/activate/${userId}`, {
@@ -416,6 +463,7 @@ const UserEdit = ({ searchParams }: any) => {
         }).then((msg) => {
             console.log(msg);
             push(`/users/${userId}`);
+            setPopup(null)
             // onsuccess(msg);
         }).catch((err) => {
             console.log(err);
@@ -444,13 +492,11 @@ const UserEdit = ({ searchParams }: any) => {
             "departmentId": Number(deptId),
             "isAdmin": isAdmin ? 1 : 0,
             "remarks": remarks,
-            "deactivated": 0,
+            "deactivated": Number(deactivated),
             "registrationDate": hasParams ? params?.registrationDate : new Date().toISOString(),
             "updateDate": new Date().toISOString(),
             "leftDate": params?.leftDate == "" ? null : params?.leftDate
         }
-
-        console.log(body)
 
         if (!hasParams) { //Create
             fetch("https://localhost:7070/api/User", {
@@ -463,12 +509,14 @@ const UserEdit = ({ searchParams }: any) => {
             }).then((msg) => {
                 console.log(msg);
                 push(`/users/${userId}`);
+                setPopup(null)
                 // onsuccess(msg);
             }).catch((err) => {
                 console.log(err);
                 // onerror(err);
             })
         } else { //Edit
+            console.log("hello")
             fetch(`https://localhost:7070/api/User/edit/${params?.userId}`, {
                 method: "PUT",
                 headers: {
@@ -479,6 +527,7 @@ const UserEdit = ({ searchParams }: any) => {
             }).then((msg) => {
                 console.log(msg);
                 push(`/users/${userId}`);
+                setPopup(null)
                 // onsuccess(msg);
             }).catch((err) => {
                 console.log(err);
@@ -521,7 +570,7 @@ const UserEdit = ({ searchParams }: any) => {
 
             <div>
                 <TextInput label="社員番号*" className={style.input} placeholder="社員番号" onChange={setUserId} initialValue={userId ? userId : ""} warning={userIdWarning}></TextInput >
-                <DatePicker label="誕生日*" className={style.input} placeholder="誕生日" onChange={setBirthday} initialValue={birthday ? birthday : null} warning={birthdayWarning} />
+                <DatePicker label="誕生日*" className={style.input} placeholder="誕生日" onChange={setBirthday} initialValue={birthday ? birthday : null} warning={birthdayWarning} max={new Date().toISOString().split('T')[0]} />
             </div>
             <div>
                 <BinarySelection label="性別*" className={style.input} selectionA="男" selectionB="女" valA={1} valB={2} initialValue={sexId ? sexId : null} func={setSexId} warning={sexIdWarning} />
@@ -541,7 +590,7 @@ const UserEdit = ({ searchParams }: any) => {
             </div>
             <div>
                 <TextInput label="電話番号*" className={style.input} type="tel" placeholder="電話番号" onChange={setTelNumber} initialValue={telNumber ? telNumber : ""} warning={telNumberWarning}></TextInput >
-                <TextInput label="メールアドレス*" regex={emailRegex} className={style.input} type="email" placeholder="メールアドレス" onChange={setEmail} initialValue={email ? email : ""} warning={emailWarning}></TextInput >
+                <TextInput label="メールアドレス*" className={style.input} type="email" placeholder="メールアドレス" onChange={setEmail} initialValue={email ? email : ""} warning={emailWarning}></TextInput >
             </div>
             <div>
                 <BinarySelection label="権限*" className={style.isAdmin} selectionA="一般ユーザー" selectionB="管理者" valA={0} valB={1} initialValue={isAdmin ? isAdmin : null} func={setIsAdmin} warning={isAdminWarning} />
@@ -553,7 +602,7 @@ const UserEdit = ({ searchParams }: any) => {
 
             <div className={style.buttonWrapper}>
                 {Object.keys(searchParams).length > 0 && searchParams.deactivated == 0 ?
-                    <Button className={style.twobutton} type={buttonStates.warning} text="ユーザを削除する" onClick={() => { confirmBeforeDeactivate() }} /> :
+                    <Button className={style.twobutton} type={buttonStates.warning} text="ユーザを無効化する" onClick={() => { confirmBeforeDeactivate() }} /> :
                     null
                 }
                 {Object.keys(searchParams).length > 0 && searchParams.deactivated == 1 ?

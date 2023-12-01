@@ -43,6 +43,8 @@ namespace InventorySystem.Dto
 
         public int? CurrentUserId { get; set; }
 
+        public string? TempId { get; set; }
+
         public virtual DeviceUserDto? CurrentUser { get; set; }
         public virtual DeviceTypeDto DeviceType { get; set; } = null!;
 

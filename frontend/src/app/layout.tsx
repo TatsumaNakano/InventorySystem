@@ -1,11 +1,11 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
-import { Inter } from 'next/font/google'
+import { M_PLUS_1 } from 'next/font/google'
 
 import Main from '@/components/Main'
 
-const inter = Inter({ subsets: ['latin'] })
+const font = M_PLUS_1({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: '貸出管理',
@@ -19,9 +19,8 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en">
-      {/* <body className={inter.className}>{children}</body> */}
-      <body>
+    <html lang="ja">
+      <body className={font.className}>
         <Header />
         <Main>
           {children}

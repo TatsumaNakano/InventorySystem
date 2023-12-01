@@ -38,6 +38,6 @@ namespace InventorySystem.Dto
 
         public int? HasGpu { get; set; }
 
-
+        public string? TempId { get; set; }
     }
 }

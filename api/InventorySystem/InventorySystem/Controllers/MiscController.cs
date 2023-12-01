@@ -134,5 +134,196 @@ namespace InventorySystem.Controllers
             var allStoragePlacesMapped = _mapper.Map<List<StoragePlaceDto>>(allStoragePlaces);
             return Ok(allStoragePlacesMapped);
         }
+
+        //--------------------------------------------------
+        // DeviceType --------------------------------------
+        //--------------------------------------------------
+
+        [HttpPost("addDeviceType/{newDeviceTypeName}&{newDeviceTypePrefix}&{newDeviceTypeEmoji}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult AddDeviceType(string newDeviceTypeName, string newDeviceTypePrefix, string newDeviceTypeEmoji)
+        {
+            bool nameAlreadyExists = _deviceTypeRepository.NameAlreadyExists(newDeviceTypeName);
+            bool prefixAlreadyExists = _deviceTypeRepository.PrefixAlreadyExists(newDeviceTypeName);
+
+            if (!ModelState.IsValid || nameAlreadyExists || prefixAlreadyExists) return BadRequest(ModelState);
+
+            _deviceTypeRepository.AddDeviceType(newDeviceTypeName,newDeviceTypePrefix, newDeviceTypeEmoji);
+
+            return Ok();
+        }
+
+        [HttpDelete("deleteDeviceType/{deviceTypeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteDeviceType(int deviceTypeId)
+        {
+            bool deviceTypeExist = _deviceTypeRepository.DeviceTypeExists(deviceTypeId);
+
+            if (!ModelState.IsValid ) return BadRequest(ModelState);
+
+            if(!deviceTypeExist) return NotFound();
+
+            _deviceTypeRepository.DeleteDeviceType(deviceTypeId);
+
+            return Ok();
+        }
+
+        [HttpGet("hasAnyDeviceOnThisDeviceType/{deviceTypeId}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult HasAnyDeviceOnThisDeviceType(int deviceTypeId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            bool anydevice = _deviceTypeRepository.HasAnyDeviceOnThisDeviceType(deviceTypeId);
+
+            return Ok(anydevice);
+        }
+
+        //--------------------------------------------------
+        // Maker -------------------------------------------
+        //--------------------------------------------------
+
+        [HttpPost("addMaker/{newMakerName}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult AddMaker(string newMakerName)
+        {
+            bool nameAlreadyExists = _deviceMakerRepository.NameAlreadyExists(newMakerName);
+
+            if (!ModelState.IsValid || nameAlreadyExists) return BadRequest(ModelState);
+
+            _deviceMakerRepository.AddMaker(newMakerName);
+
+            return Ok();
+        }
+
+        [HttpDelete("deleteMaker/{makerId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteMaker(int makerId)
+        {
+            bool deviceMakerExist = _deviceMakerRepository.MakerExists(makerId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!deviceMakerExist) return NotFound();
+
+            _deviceMakerRepository.DeleteMaker(makerId);
+
+            return Ok();
+        }
+
+        [HttpGet("hasAnyDeviceOnThisMaker/{makerId}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult HasAnyDeviceOnThisMaker(int makerId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            bool hasAnyDevice = _deviceMakerRepository.HasAnyDeviceOnThisMaker(makerId);
+
+            return Ok(hasAnyDevice);
+        }
+
+        //--------------------------------------------------
+        // OS ----------------------------------------------
+        //--------------------------------------------------
+
+        [HttpPost("addOs/{newOsName}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult AddOs(string newOsName)
+        {
+            bool nameAlreadyExists = _operationSystemRepository.NameAlreadyExists(newOsName);
+
+            if (!ModelState.IsValid || nameAlreadyExists) return BadRequest(ModelState);
+
+            _operationSystemRepository.AddOs(newOsName);
+
+            return Ok();
+        }
+
+        [HttpDelete("deleteOs/{osId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteOs(int osId)
+        {
+            bool osExist = _operationSystemRepository.OsExists(osId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!osExist) return NotFound();
+
+            _operationSystemRepository.DeleteOs(osId);
+
+            return Ok();
+        }
+
+        [HttpGet("hasAnyDeviceOnThisOs/{osId}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult HasAnyDeviceOnThisOs(int osId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            bool hasAnyDevice = _operationSystemRepository.HasAnyDeviceOnThisOs(osId);
+
+            return Ok(hasAnyDevice);
+        }
+
+
+        //--------------------------------------------------
+        // StoragePlace ------------------------------------
+        //--------------------------------------------------
+
+        [HttpPost("addStoragePlace/{newPlaceName}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult AddStoragePlace(string newPlaceName)
+        {
+            bool nameAlreadyExists = _storagePlaceRepository.NameAlreadyExists(newPlaceName);
+
+            if (!ModelState.IsValid || nameAlreadyExists) return BadRequest(ModelState);
+
+            _storagePlaceRepository.AddStoragePlace(newPlaceName);
+
+            return Ok();
+        }
+
+        [HttpDelete("deleteStoragePlace/{placeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteStoragePlace(int placeId)
+        {
+            bool osExist = _storagePlaceRepository.StoragePlaceExists(placeId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!osExist) return NotFound();
+
+            _storagePlaceRepository.DeleteStoragePlace(placeId);
+
+            return Ok();
+        }
+
+        [HttpGet("hasAnyDeviceOnThisStoragePlace/{placeId}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult HasAnyDeviceOnThisStoragePlace(int placeId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            bool hasAnyDevice = _storagePlaceRepository.HasAnyDeviceOnThisStoragePlace(placeId);
+
+            return Ok(hasAnyDevice);
+        }
+
     }
 }

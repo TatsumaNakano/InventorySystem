@@ -8,16 +8,21 @@
     label.name {
         font-size: 0.8rem;
         color: var(--dark-gray);
+        margin-right: 0.618rem;
     }
 
-    label.data {
+    p.data {
         font-size: 0.9rem;
         color: var(--black);
     }
 
-    label.nodata {
+    p.nodata {
         font-size: 1rem;
         color: var(--light-gray);
+    }
+
+    p {
+        margin: 0;
     }
 
 

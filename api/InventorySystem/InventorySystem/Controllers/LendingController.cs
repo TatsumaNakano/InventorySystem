@@ -25,14 +25,13 @@ namespace InventorySystem.Controllers
         public IActionResult GetCurrentLendings()
         {
             var lendings = _mapper.Map<List<LendingDto>>(_lendingRepository.GetCurrentLendings());
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             return Ok(lendings);
         }
 
-        [HttpGet("id&{id}")]
+        [HttpGet("id/{id}")]
         [ProducesResponseType(200, Type = typeof(Lending))]
         [ProducesResponseType(400)]
         public IActionResult GetLending(int id)
@@ -44,6 +43,24 @@ namespace InventorySystem.Controllers
 
             return Ok(lending);
         }
+
+        [HttpGet("tempIdToLendingId/{tempId}")]
+        [ProducesResponseType(200, Type = typeof(Lending))]
+        [ProducesResponseType(400)]
+        public IActionResult GetLendingIdByTempId(string tempId)
+        {
+            int id = _lendingRepository.GetLendingIdByTempId(tempId);
+            bool lendingExist = _lendingRepository.LendingExist(id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!lendingExist)
+                return NotFound();
+
+            return Ok(id);
+        }
+
 
         [HttpGet("due")]
         [ProducesResponseType(200, Type = typeof(Lending))]
@@ -71,5 +88,19 @@ namespace InventorySystem.Controllers
 
             return Ok("デバイスの貸し出し手続き完了");
         }
+
+
+        [HttpPut("delete/{id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult ReturnDeviceLending(int id)
+        {
+            if (!_lendingRepository.LendingExist(id) || !ModelState.IsValid) 
+                return BadRequest(ModelState);
+            _lendingRepository.DeleteLending(id);
+            return Ok("デバイスの返却手続き完了");
+        }
+
     }
 }

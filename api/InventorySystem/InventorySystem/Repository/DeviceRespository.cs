@@ -31,7 +31,7 @@ namespace InventorySystem.Repository
                 .Include(d => d.Maker)
                 .Include(d => d.Os)
                 .Include(d => d.Place)
-                .Where(e => e.CurrentUserId == null).ToList();
+                .Where(e => e.CurrentUserId == null && e.BrokenFlag == 0 && e.DeleteFlag == 0).ToList();
         }
 
         public ICollection<Device> GetBrokenDevices()
@@ -67,6 +67,17 @@ namespace InventorySystem.Repository
         }
 
         public Device GetDevice(string deviceId)
+        {
+            return _context.Devices
+                .Include(d => d.CurrentUser)
+                .Include(d => d.DeviceType)
+                .Include(d => d.Maker)
+                .Include(d => d.Os)
+                .Include(d => d.Place)
+                .Where(e => e.DeviceId == deviceId).FirstOrDefault();
+        }
+
+        public Device GetDeviceByTempId(string deviceId)
         {
             return _context.Devices
                 .Include(d => d.CurrentUser)
@@ -132,6 +143,12 @@ namespace InventorySystem.Repository
                 .Include(d => d.Place)
                 .Where(e => e.DeviceTypeId == typeId).ToList();
         }
+
+        public string GetDeviceIdByTempId(string tempId)
+        {
+            return _context.Devices.Where(d => d.TempId == tempId).FirstOrDefault().DeviceId;
+        }
+
         public bool DeviceExist(int id)
         {
             return _context.Devices.Any(d => d.Id == id);
@@ -155,12 +172,34 @@ namespace InventorySystem.Repository
             return Save();
         }
 
-        public bool DeleteDevice(Device device)
+        public bool DeactivateDevice(Device targetDevice)
         {
-            device.DeleteFlag = 1;
+            Device device = _context.Devices.Where(d => d.DeviceId == targetDevice.DeviceId).FirstOrDefault();
+            device.DeleteFlag = targetDevice.DeleteFlag;
+            device.BrokenFlag = targetDevice.BrokenFlag;
+            device.Remarks = targetDevice.Remarks;
             _context.Update(device);
+
             return Save();
         }
+
+        public bool ActivateDevice(Device targetDevice)
+        {
+            Device device = _context.Devices.Where(d => d.DeviceId == targetDevice.DeviceId).FirstOrDefault();
+            device.BrokenFlag = 0;
+            device.DeleteFlag = 0;
+            device.Remarks = targetDevice.Remarks;
+            _context.Update(device);
+
+            return Save();
+        }
+
+        //public bool DeleteDevice(Device device)
+        //{
+        //    device.DeleteFlag = 1;
+        //    _context.Update(device);
+        //    return Save();
+        //}
 
         public bool EditDevice(Device device)
         {
@@ -170,7 +209,7 @@ namespace InventorySystem.Repository
 
         public bool Save()
         {
-            var saved = _context.SaveChanges();
+            var saved = _context.SaveChanges(); 
             return saved > 0;
         }
     }

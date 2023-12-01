@@ -7,7 +7,7 @@ const TextArea = ({ label, placeholder, onChange, initialValue, className }: any
         <textarea
             className={`${commonStyle.input} ${style.textarea}`}
             placeholder={placeholder}
-            onChange={(e: any) => { onChange(e.target.value) }}
+            onChange={(e: any) => { onChange(e.target.value); }}
             defaultValue={initialValue}
         ></textarea>
     </div>)

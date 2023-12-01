@@ -1,0 +1,11 @@
+.pageBackButton {
+    display: inline-block;
+    color: var(--dark-gray);
+    font-size: 1rem;
+    text-decoration: none;
+    margin-bottom: 1rem;
+
+    &::before {
+        content: "< ";
+    }
+}

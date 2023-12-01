@@ -8,10 +8,12 @@ interface Props {
     onChange: Function
     initialValue: any
     className?: string
-    warning?: string | boolean
+    warning?: string | boolean,
+    max?: string,
+    disabled?: boolean
 }
 
-const DatePicker = ({ label, placeholder, onChange, initialValue, className, warning = false }: Props) => {
+const DatePicker = ({ label, placeholder, onChange, initialValue, className, warning = false, max = "", disabled = false }: Props) => {
     const val = initialValue != null && initialValue != "" && initialValue.split != undefined ? initialValue.split("T")[0] : "";
     return (
         <div className={`${commonStyle.inputCommon} ${className}`}>
@@ -22,7 +24,7 @@ const DatePicker = ({ label, placeholder, onChange, initialValue, className, war
                 className={`${commonStyle.input}  ${warning ? commonStyle.warningOutline : ""}`}
                 placeholder={placeholder}
                 type="date"
-                max={new Date().toISOString().split('T')[0]}
+                readOnly={disabled as any}
                 onChange={(e: any) => onChange(e.target.value + "T00:00:00")}
                 value={val}
 

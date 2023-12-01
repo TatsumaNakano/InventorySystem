@@ -29,6 +29,7 @@ namespace InventorySystem.Controllers
         public IActionResult GetAllDevices()
         {
             var d = _deviceRepository.GetAllDevices();
+            //Console.Writeline(d);
             var devices = _mapper.Map<List<DeviceDto>>(d);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,7 +49,7 @@ namespace InventorySystem.Controllers
         }
 
 
-        [HttpGet("deviceId&{deviceId}")]
+        [HttpGet("deviceId/{deviceId}")]
         [ProducesResponseType(200, Type = typeof(Device))]
         [ProducesResponseType(400)]
         public IActionResult GetDevice(string deviceId)
@@ -59,6 +60,22 @@ namespace InventorySystem.Controllers
 
             return Ok(device);
         }
+
+        [HttpGet("tempIdToDeviceId/{tempId}")]
+        [ProducesResponseType(200, Type = typeof(Device))]
+        [ProducesResponseType(400)]
+        public IActionResult GetDeviceIdByTempId(string tempId)
+        {
+            var deviceId = _deviceRepository.GetDeviceIdByTempId(tempId);
+            bool deviceExist = _deviceRepository.DeviceExist(deviceId);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!deviceExist) return NotFound();
+
+            return Ok(deviceId);
+        }
+
 
 
         [HttpGet("available")]
@@ -160,8 +177,68 @@ namespace InventorySystem.Controllers
 
             _deviceRepository.AddDevice(deviceMapped);
 
-            return Ok("デバイス" + device.DeviceId + "作成完了");
+            return Ok("デバイス" + deviceMapped + "作成完了");
 
         }
+
+        [HttpPut("deactivate")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeactivateDevice([FromBody] DeviceEditDto targetDevice)
+        {
+            var deviceExists = _deviceRepository.DeviceExist(targetDevice.DeviceId);
+            if(!deviceExists || !ModelState.IsValid) return BadRequest(ModelState);
+
+            Device deviceMapped = _mapper.Map<Device>(targetDevice);
+
+            if (!_deviceRepository.DeactivateDevice(deviceMapped))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("機器の無効化が完了しました。");
+        }
+
+
+        [HttpPut("activate")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult ActivateDevice([FromBody] DeviceEditDto targetDevice)
+        {
+            var deviceExists = _deviceRepository.DeviceExist(targetDevice.DeviceId);
+            if (!deviceExists || !ModelState.IsValid) BadRequest(ModelState);
+
+            Device deviceMapped = _mapper.Map<Device>(targetDevice);
+
+            if (!_deviceRepository.ActivateDevice(deviceMapped))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("機器の有効化が完了しました。");
+        }
+
+
+        [HttpPut("edit")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult EditDevice([FromBody] DeviceEditDto targetDevice)
+        {
+            var deviceExists = _deviceRepository.DeviceExist(targetDevice.DeviceId);
+            if (!deviceExists || !ModelState.IsValid) BadRequest(ModelState);
+
+            Device deviceMapped = _mapper.Map<Device>(targetDevice);
+
+            if (!_deviceRepository.ActivateDevice(deviceMapped))
+            {
+                ModelState.AddModelError("", "予期せぬエラーが起こりました。");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("機器の有効化が完了しました。");
+        }
+
     }
 }

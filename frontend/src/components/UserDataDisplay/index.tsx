@@ -11,23 +11,47 @@ import Button from "../Button";
 import { buttonStates } from "@/utility/states";
 import UserEmoji from "../UserEmoji";
 
-const UserDataDisplay = () => {
+const UserDataDisplay = ({ searchString }: any) => {
 
     const [userData, setUserData] = useState([]);
+    const [filteredUserData, setFilteredUserData] = useState([]);
     useEffect(() => {
 
         const getUserData = async () => {
             const query = await fetch(`${process.env.API_PATH}/api/User`);
             const response = await query.json();
             setUserData(response);
+            setFilteredUserData(response);
         }
 
         getUserData();
     }, []);
 
+    //検索文字列の変更ごとに呼び出し
+    useEffect(() => {
+        const searchLower = searchString.toLowerCase();
+        const filtered = userData.filter((user: any) => {
+            const firstNameMatch = user.firstName.toLowerCase().includes(searchLower);
+            const lastNameMatch = user.lastName.toLowerCase().includes(searchLower);
+            const kanaFirstNameMatch = user.kanaFirstName.toLowerCase().includes(searchLower);
+            const kanaLastNameMatch = user.kanaLastName.toLowerCase().includes(searchLower);
+            const telNumberMatch = user.telNumber.toLowerCase().includes(searchLower);
+            const emailMatch = user.email.toLowerCase().includes(searchLower);
+            const deptMatch = user.department.name.toLowerCase().includes(searchLower);
+            const posMatch = user.position.name.toLowerCase().includes(searchLower);
+            const userIdMatch = user.userId.toLowerCase().includes(searchLower);
+            const sexMatch = user.sex.name.toLowerCase().includes(searchLower);
+
+            return firstNameMatch || lastNameMatch || kanaFirstNameMatch || kanaLastNameMatch || telNumberMatch || emailMatch || deptMatch || posMatch || userIdMatch || sexMatch;
+        });
+
+        setFilteredUserData(filtered);
+    }, [searchString])
+
+
     return (
         <div className={style.userDataDisplay}>
-            <UserList data={userData} />
+            <UserList data={filteredUserData} />
         </div>
     );
 }
@@ -51,7 +75,7 @@ const UserList = ({ data }: any) => {
 const UserItem = ({ user }: any) => {
     // console.log(user);
     return (
-        <li className={style.userItem}>
+        <li className={`${style.userItem} ${user.deactivated ? style.disabled : ""}`}>
             <div className={style.info}>
                 <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
 
@@ -93,8 +117,8 @@ const UserItem = ({ user }: any) => {
                     {/* Right Section */}
                     <div className={style.right}>
                         <div className={commonStyle.paddingBottomOneRem}>{/* 登録更新 */}
-                            <PropertyItem label="" data={user.telNumber} />
-                            <PropertyItem label="" data={user.email} />
+                            <PropertyItem label="📞" data={user.telNumber} copyable />
+                            <PropertyItem label="📧" data={user.email} copyable />
                         </div>
 
                         <div>{/* 備考 */}

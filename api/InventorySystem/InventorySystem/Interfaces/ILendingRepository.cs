@@ -12,9 +12,10 @@ namespace InventorySystem.Interfaces
         bool AddLending(Lending lending);
         bool UpdateLending(Lending lending);
         bool DeleteLending(Lending lending);
+        bool DeleteLending(int lendingId);
 
+        int GetLendingIdByTempId(string tempId);
         bool Save();
-
 
     }
 }

@@ -16,6 +16,7 @@ namespace InventorySystem.Repository
         public ICollection<Lending> GetCurrentLendings()
         {
             return _context.Lendings
+                .Where(e => e.DeleteFlag == 0)
                 .Include(l => l.User)
                 .ThenInclude(u => u.Department)
                 .Include(l => l.User)
@@ -26,7 +27,6 @@ namespace InventorySystem.Repository
                 .ThenInclude(d => d.DeviceType)
                 .Include(l => l.Device)
                 .ThenInclude(d => d.Os)
-                .Where(e => e.DeleteFlag == 0)
                 .OrderBy(x => x.RentalEnd)
                 .ToList();
         }
@@ -65,10 +65,15 @@ namespace InventorySystem.Repository
                 .Where(e => e.Id == id).FirstOrDefault();
         }
 
+        public int GetLendingIdByTempId(string tempId)
+        {
+            return _context.Lendings.Where(e => e.TempId == tempId).FirstOrDefault().Id;
+        }
 
         public bool AddLending(Lending lending)
         {
             _context.Add(lending);
+            _context.Devices.Where(d => d.Id == lending.DeviceId).FirstOrDefault().CurrentUserId = lending.UserId;
             return Save();
         }
 
@@ -78,8 +83,16 @@ namespace InventorySystem.Repository
             return Save();
         }
 
+        public bool DeleteLending(int id)
+        {
+            var lending = _context.Lendings.Where(l => l.Id == id).FirstOrDefault();
+            DeleteLending(lending);
+            return Save();
+        }
+
         public bool DeleteLending(Lending lending)
         {
+            _context.Devices.Where(d => d.Id == lending.DeviceId).FirstOrDefault().CurrentUserId = null;
             lending.DeleteFlag = 1;
             _context.Update(lending);
             return Save();
@@ -96,5 +109,7 @@ namespace InventorySystem.Repository
         {
             return _context.Lendings.Any(l => l.Id == id);
         }
+
+
     }
 }

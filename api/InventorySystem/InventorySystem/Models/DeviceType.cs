@@ -13,5 +13,7 @@ public partial class DeviceType
 
     public int NextVersion { get; set; }
 
+    public string Emoji { get; set; }
+
     public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
 }

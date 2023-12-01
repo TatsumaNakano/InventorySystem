@@ -1,4 +1,5 @@
 .userDataDisplay {
+    margin-top: 4.235rem;
     width: 100%;
 
     ul {
@@ -22,6 +23,7 @@
         .userItem {
             border-radius: var(--box-border-radius);
             background-color: var(--listitem-background);
+            filter: var(--item-shadow);
             min-width: 50%;
 
             div.info {
@@ -101,8 +103,15 @@
                     font-size: 1.618rem;
                 }
             }
+
+            >:first-child {
+                margin-right: 0.618rem;
+            }
         }
     }
 
+    .disabled {
+        background-color: var(--listitem-deactivated-background) !important;
+    }
 
 }

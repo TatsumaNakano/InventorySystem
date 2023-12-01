@@ -10,6 +10,13 @@
         list-style: none;
     }
 
+    >h5 {
+        font-size: 1.618rem;
+        margin: 4.235rem 0 1.618rem 1rem;
+        font-weight: 300;
+        color: var(--dark-gray);
+    }
+
     .lendingList {
         min-width: 100%;
         display: grid;
@@ -18,11 +25,10 @@
         list-style: none;
         gap: 1rem;
 
-
         .lendingItem {
             border-radius: var(--box-border-radius);
             background-color: var(--listitem-background);
-
+            filter: var(--item-shadow);
             min-width: 50%;
 
             div.info {
@@ -52,6 +58,7 @@
 
                         span.kana {
                             font-size: 0.618rem;
+                            text-align: center;
                         }
 
                         span.kanji {
@@ -75,7 +82,8 @@
             }
 
             .date {
-                background-color: white;
+                // background-color: white;
+                border: 1px solid var(--dark-gray);
                 padding: 1rem;
                 border-radius: 10px;
                 margin-bottom: 1rem;
@@ -93,6 +101,14 @@
                 }
             }
 
+            .due {
+                border: 1px solid var(--warning-red) !important;
+
+                * {
+                    color: var(--warning-red) !important;
+                }
+            }
+
 
         }
 
@@ -100,12 +116,15 @@
 
     .nameLabel {
         display: flex;
-        margin-bottom: 1rem;
+        // margin-bottom: 1rem;
         padding-bottom: 0.618rem;
-
-
+        cursor: pointer;
         width: 100%;
         display: flex;
+
+        * {
+            cursor: pointer;
+        }
 
         h4.emoji {
             margin: 0;
@@ -122,13 +141,28 @@
         label {
             font-size: 0.8rem;
         }
+
+        div {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
     }
 
-    .left {
-        // padding-right: 2rem;
-    }
+    // .left {
+    //     // padding-right: 2rem;
+    // }
 
+    // .right {}
+    .left,
     .right {}
 
+    .border {
+        border: solid 2px white;
+        padding: 1rem 0.4rem;
+        border-radius: 10px;
+        height: min-content;
+    }
 
 }

@@ -5,12 +5,17 @@
     div.info {
         display: flex;
         padding: 1rem;
-        gap: 1rem;
+        // gap: 1rem;
+
         flex-grow: 1;
         min-width: 50%;
 
         >div {
-            min-width: 50%;
+            width: 50%;
+        }
+
+        >:first-child {
+            padding-right: 1rem;
         }
 
         h3.name {
@@ -23,11 +28,17 @@
 
                 span.kana {
                     font-size: 0.618rem;
+                    text-align: center;
                 }
 
                 span.kanji {
                     font-size: 1.618rem;
                 }
+
+            }
+
+            >:first-child {
+                margin-right: 0.618rem;
             }
         }
     }

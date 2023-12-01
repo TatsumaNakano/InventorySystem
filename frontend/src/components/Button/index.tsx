@@ -9,10 +9,11 @@ interface ButtonInterface {
     link?: string | object,
     onClick?: any | null,
     className?: string,
-    replace?: boolean
+    replace?: boolean,
+    noLinkMode?: boolean
 }
 
-const Button = ({ type, text = "", link = "", onClick = null, className, replace = false }: ButtonInterface) => {
+const Button = ({ type, text = "", link = "", onClick = null, className, replace = false, noLinkMode }: ButtonInterface) => {
 
     var buttonStyle = (() => {
         switch (type) {
@@ -20,6 +21,8 @@ const Button = ({ type, text = "", link = "", onClick = null, className, replace
                 return style.positive;
             case buttonStates.warning:
                 return style.warning;
+            case buttonStates.warningB:
+                return style.warningB;
             case buttonStates.detail:
                 return style.detail;
             case buttonStates.disabled:
@@ -32,9 +35,14 @@ const Button = ({ type, text = "", link = "", onClick = null, className, replace
     const disable = link || onClick ? {} : { pointerEvents: "none" };
 
     return (
-        <Link href={link} className={`${style.button} ${buttonStyle} ${className}`} style={disable as any} onClick={onClick}>
-            {text}
-        </Link>
+        noLinkMode ?
+            <div className={`${style.button} ${buttonStyle} ${className}`} style={disable as any} onClick={onClick}>
+                {text}
+            </div>
+            :
+            <Link href={link} className={`${style.button} ${buttonStyle} ${className}`} style={disable as any} onClick={onClick}>
+                {text}
+            </Link>
     );
 }
 

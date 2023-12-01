@@ -276,7 +276,7 @@ namespace InventorySystem.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("ユーザー削除完了。");
+            return Ok("ユーザー復帰完了。");
         }
 
     }

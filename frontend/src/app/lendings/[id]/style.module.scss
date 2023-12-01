@@ -49,6 +49,7 @@
 
                 span.kana {
                     font-size: 0.618rem;
+                    text-align: center;
                 }
 
                 span.kanji {
@@ -75,7 +76,7 @@
 
 .nameLabel {
     display: flex;
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
     padding-bottom: 0.618rem;
 
 
@@ -97,6 +98,13 @@
     label {
         font-size: 0.8rem;
     }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .left {
@@ -104,3 +112,11 @@
 }
 
 .right {}
+
+
+.border {
+    border: solid 2px white;
+    padding: 1rem 1rem;
+    border-radius: 10px;
+    height: min-content;
+}

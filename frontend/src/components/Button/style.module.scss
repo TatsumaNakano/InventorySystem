@@ -20,7 +20,13 @@
     color: var(--white);
 }
 
+.warningB {
+    border: solid 2px var(--warning-red);
+    color: var(--warning-red);
+}
+
 .detail {
+    background-color: var(--white);
     border: solid 2px var(--positive-blue);
     color: var(--black);
 }

@@ -14,6 +14,18 @@ namespace InventorySystem.Interfaces
 
         public bool IncrementVersion(int deviceTypeId);
 
+        public bool NameAlreadyExists(string name);
+
+        public bool PrefixAlreadyExists(string prefix);
+
+        public bool DeviceTypeExists(int deviceTypeId);
+
+        public bool AddDeviceType(string name, string prefix, string emoji);
+
+        public bool DeleteDeviceType(int deviceTypeId);
+
+        public bool HasAnyDeviceOnThisDeviceType(int deviceTypeId);
+
         public bool Save();
     }
 }

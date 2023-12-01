@@ -10,7 +10,7 @@
     align-items: center;
 
     >div {
-        width: 30%;
+        width: fit-content;
         height: fit-content;
         background-color: aliceblue;
         border-radius: var(--box-border-radius);
@@ -34,11 +34,58 @@
             font-size: 1rem;
             text-align: center;
             margin: 0 0 1rem 0;
-
+            max-width: 400px;
+            line-height: 1.618rem;
         }
     }
 }
 
 .button {
     width: 180px;
+}
+
+
+.datepicker {
+    width: 200px;
+    margin-bottom: 1.618rem;
+}
+
+.textArea {
+    width: 100%;
+
+    textarea {
+        height: 100px;
+    }
+
+    margin-bottom: 1rem;
+    gap: 0 !important;
+    display: block !important;
+}
+
+.textInput {
+    width: 100%;
+
+    input {
+        width: 100%;
+    }
+
+
+    margin-bottom: 1rem;
+    display: block !important;
+}
+
+.emojiInput {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-size: 4.23rem;
+        margin: 1rem;
+    }
+
+    aside {
+        margin-bottom: 1rem;
+        height: 400px !important;
+    }
+
 }

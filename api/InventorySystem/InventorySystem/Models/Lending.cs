@@ -19,9 +19,12 @@ public partial class Lending
 
     public string? Remarks { get; set; }
 
+    public string? TempId { get; set; }
+
     public virtual Device Device { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
 
 
 }

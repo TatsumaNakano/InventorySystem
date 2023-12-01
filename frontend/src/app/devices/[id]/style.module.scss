@@ -34,6 +34,14 @@
         margin: 0;
         font-size: 2.617rem;
         margin-right: 0.618rem;
+        position: relative;
+
+        label {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: 1rem;
+        }
     }
 
     h3 {
@@ -44,10 +52,24 @@
     label {
         font-size: 0.8rem;
     }
+
+    div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
 }
 
-.left {
+.left,
+.right {
+    width: 50%;
     // padding-right: 2rem;
 }
 
-.right {}
+.enabled {
+    background-color: var(--listitem-background);
+}
+
+.disabled {
+    background-color: var(--listitem-deactivated-background);
+}
