@@ -11,6 +11,13 @@
         list-style: none;
     }
 
+    >h5 {
+        font-size: 1.618rem;
+        margin: 4.235rem 0 1.618rem 1rem;
+        font-weight: 300;
+        color: var(--dark-gray);
+    }
+
     .userList {
         min-width: 100%;
         display: grid;
@@ -68,50 +75,61 @@
         display: flex;
         margin: 1rem;
         margin-bottom: 0;
+        justify-content: space-between;
 
-        h4.emoji {
-            margin: 0;
-            font-size: 2.617rem;
-            margin-right: 0.618rem;
-        }
-
-        h3 {
-            margin: 0;
-            font-size: 1.618rem;
-        }
-
-        label {
-            font-size: 0.8rem;
-        }
-
-        h3.name {
+        div {
             display: flex;
+            align-items: center;
 
-            label {
-                text-overflow: clip;
 
-                span {
-                    display: block;
-                    text-align: center;
-                }
-
-                span.kana {
-                    font-size: 0.618rem;
-                }
-
-                span.kanji {
-                    font-size: 1.618rem;
-                }
+            h4.emoji {
+                margin: 0;
+                font-size: 2.617rem;
+                margin-right: 0.618rem;
             }
 
-            >:first-child {
-                margin-right: 0.618rem;
+            h3 {
+                margin: 0;
+                font-size: 1.618rem;
+            }
+
+            label {
+                font-size: 0.8rem;
+            }
+
+            h3.name {
+                display: flex;
+
+                label {
+                    text-overflow: clip;
+
+                    span {
+                        display: block;
+                        text-align: center;
+                    }
+
+                    span.kana {
+                        font-size: 0.618rem;
+                    }
+
+                    span.kanji {
+                        font-size: 1.618rem;
+                    }
+                }
+
+                >:first-child {
+                    margin-right: 0.618rem;
+                }
             }
         }
     }
 
     .disabled {
         background-color: var(--listitem-deactivated-background) !important;
+    }
+
+    .deactivatedUser {
+        color: var(--warning-red);
     }
 
 }

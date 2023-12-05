@@ -10,6 +10,7 @@ import Button from "../Button";
 import { buttonStates } from "@/utility/states";
 import DeviceInfoSummery from "@/components/DeviceInfoSummery"
 import Loading from "../Loading";
+import { useRouter } from "next/navigation";
 
 
 const DeviceDataDisplay = ({ searchString, onConnected }: any) => {
@@ -68,10 +69,16 @@ const DeviceDataDisplay = ({ searchString, onConnected }: any) => {
     }, [searchString])
 
     if (!pageReady) return <Loading message={loadStatus} />
+
+    const availableDevice = filteredDeviceData.filter((item: any) => item.brokenFlag == 0 && item.deleteFlag == 0 && item.currentUser == null);
+    const notAvailableDevice = filteredDeviceData.filter((item: any) => item.brokenFlag == 1 || item.deleteFlag == 1 || item.currentUser != null);
     return (
         <div className={style.deviceDataDisplay}>
             <DeviceInfoSummery data={deviceData} />
-            <DeviceList data={filteredDeviceData} />
+            <h5>貸出可能な機器</h5>
+            <DeviceList data={availableDevice} />
+            <h5>貸出不可能な機器</h5>
+            <DeviceList data={notAvailableDevice} />
         </div>
     );
 }
@@ -92,6 +99,8 @@ const DeviceList = ({ data }: any) => {
 
 
 const DeviceItem = ({ item }: any) => {
+
+    const { push } = useRouter();//JSでページ移動する時に必要
     // console.log((item.registrationDate));
     // console.log(formatDate(item.registrationDate));
     var rentalButton = (() => {
@@ -103,15 +112,15 @@ const DeviceItem = ({ item }: any) => {
                 }} />
             } else {
                 if (item.deleteFlag == 1) {
-                    return <Button className={style.button} type={buttonStates.disabled} text={`削除済み`} link="/" />;
+                    return <Button className={style.button} type={buttonStates.disabled} text={`削除済み`} />;
                 }
                 else if (item.brokenFlag == 1 && item.deleteFlag == 0) {
-                    return <Button className={style.button} type={buttonStates.disabled} text={`故障中`} link="/" />;
+                    return <Button className={style.button} type={buttonStates.disabled} text={`故障中`} />;
                 }
 
             }
         } else {
-            return <Button className={style.button} type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} link="/" />
+            return <Button className={style.button} type={buttonStates.disabled} text={`${item.currentUser.lastName}${item.currentUser.firstName}が貸出中`} />
         }
     })()
 
@@ -120,12 +129,13 @@ const DeviceItem = ({ item }: any) => {
             <div className={style.info}>
                 {/* Left Section */}
                 <div className={style.left}>
-                    <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
+                    <div className={`${style.nameLabel} ${commonStyle.borderBottom}`} onClick={() => { push(`/devices/${item.deviceId}`) }}>
                         {/* Icon Emoji */}
                         <h4 className={style.emoji}>
                             {base64ToEmoji(item.deviceType.emoji)}
                             {item.deleteFlag == 1 ? <label className={style.deleteFlag}>❌</label> : null}
                             {item.deleteFlag == 0 && item.brokenFlag == 1 ? <label className={style.brokenFlag}>🛠️</label> : null}
+                            {item.currentUser ? <label >👤</label> : null}
                         </h4>
 
                         {/* Name and Info */}

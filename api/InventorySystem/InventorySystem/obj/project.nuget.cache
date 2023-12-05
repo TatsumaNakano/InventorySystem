@@ -1,9 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "NEt1lyc9bkZROddwJS66TA95yjy9z2lrNP76Iq274joMRC4RdcumzzrzFgQ9WN1WqzV3u9Cr7lSoaKUgwWmf2Q==",
+  "dgSpecHash": "kc1DPWgWRgIKOeC32vhC5H5/o48r3GTgFATP+pN21l30eszPfUXrcg1iQXESwkCltLL5SkOjlqn67O4JC9YjUw==",
   "success": true,
   "projectFilePath": "C:\\Users\\nakan\\Desktop\\SUS\\InventorySystem\\api\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.apigatewayevents\\2.7.0\\amazon.lambda.apigatewayevents.2.7.0.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.applicationloadbalancerevents\\2.2.0\\amazon.lambda.applicationloadbalancerevents.2.2.0.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.aspnetcoreserver\\8.1.1\\amazon.lambda.aspnetcoreserver.8.1.1.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.aspnetcoreserver.hosting\\1.6.1\\amazon.lambda.aspnetcoreserver.hosting.1.6.1.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.core\\2.2.0\\amazon.lambda.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.logging.aspnetcore\\3.1.0\\amazon.lambda.logging.aspnetcore.3.1.0.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.runtimesupport\\1.10.0\\amazon.lambda.runtimesupport.1.10.0.nupkg.sha512",
+    "C:\\Users\\nakan\\.nuget\\packages\\amazon.lambda.serialization.systemtextjson\\2.4.0\\amazon.lambda.serialization.systemtextjson.2.4.0.nupkg.sha512",
     "C:\\Users\\nakan\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\nakan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\nakan\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",

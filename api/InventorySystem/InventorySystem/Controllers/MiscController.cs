@@ -43,6 +43,14 @@ namespace InventorySystem.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("test")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult Test()
+        {
+            return Ok("Succeed!");
+        }
+
         [HttpGet("gender")]
         [ProducesResponseType(200, Type = typeof(Gender))]
         [ProducesResponseType(400)]
@@ -272,6 +280,11 @@ namespace InventorySystem.Controllers
         public IActionResult HasAnyDeviceOnThisOs(int osId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!_operationSystemRepository.OsExists(osId))
+            {
+                return Ok(false);
+            }
             bool hasAnyDevice = _operationSystemRepository.HasAnyDeviceOnThisOs(osId);
 
             return Ok(hasAnyDevice);

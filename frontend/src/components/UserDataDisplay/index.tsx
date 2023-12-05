@@ -68,9 +68,16 @@ const UserDataDisplay = ({ searchString, onConnect }: any) => {
     }, [searchString])
 
     if (!pageReady) return <Loading message={loadStatus} />
+
+    const activeUsers = filteredUserData.filter((user: any) => user.deactivated == 0);
+    const inactiveUsers = filteredUserData.filter((user: any) => user.deactivated == 1);
+
     return (
         <div className={style.userDataDisplay}>
-            <UserList data={filteredUserData} />
+
+            <UserList data={activeUsers} />
+            <h5>無効化されたユーザ一覧</h5>
+            <UserList data={inactiveUsers} />
         </div>
     );
 }
@@ -99,20 +106,24 @@ const UserItem = ({ user }: any) => {
                 <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
 
                     {/* Name */}
-
-                    <h4 className={style.emoji}>
-                        <UserEmoji type={user.sex.id} />
-                    </h4>
-                    <h3 className={style.name}>
-                        <label>
-                            <span className={style.kana}>{user.kanaLastName}</span>
-                            <span className={style.kanji}>{user.lastName}</span>
-                        </label>
-                        <label>
-                            <span className={style.kana}>{user.kanaFirstName}</span>
-                            <span className={style.kanji}>{user.firstName}</span>
-                        </label>
-                    </h3>
+                    <div>
+                        <h4 className={style.emoji}>
+                            <UserEmoji type={user.sex.id} />
+                        </h4>
+                        <h3 className={style.name}>
+                            <label>
+                                <span className={style.kana}>{user.kanaLastName}</span>
+                                <span className={style.kanji}>{user.lastName}</span>
+                            </label>
+                            <label>
+                                <span className={style.kana}>{user.kanaFirstName}</span>
+                                <span className={style.kanji}>{user.firstName}</span>
+                            </label>
+                        </h3>
+                    </div>
+                    <div>
+                        {user.deactivated == 1 ? <label className={style.deactivatedUser}>無効化されたユーザ</label> : null}
+                    </div>
 
                 </div>
                 <div className={style.half}>

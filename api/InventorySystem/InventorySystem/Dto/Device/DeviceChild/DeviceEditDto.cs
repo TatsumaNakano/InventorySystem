@@ -5,6 +5,7 @@ namespace InventorySystem.Dto
 {
     public class DeviceEditDto
     {
+        public int Id { get; set; }
         public string DeviceId { get; set; } = null!;
         //public string? OldName { get; set; }
 

@@ -25,6 +25,7 @@ namespace InventorySystem.Interfaces
         public bool ActivateDevice(Device targetDevice);
         
         public string GetDeviceIdByTempId(string tempId);
+        public int GetIdByDeviceId(string deviceId);
 
         public bool DeviceExist(int id);
         public bool DeviceExist(string deviceid);

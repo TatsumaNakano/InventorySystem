@@ -33,6 +33,12 @@ const LendingEdit = ({ searchParams }: any) => {
     const [userId, setUserId] = useState(-1);
     const [remarks, setRemarks] = useState(null);
 
+    const [rentalStartWarning, setRentalStartWarning] = useState<string | boolean>(false);
+    const [rentalEndWarning, setRentalEndWarning] = useState<string | boolean>(false);
+    const [deviceIdWarning, setDeviceIdWarning] = useState<string | boolean>(false);
+    const [userIdWarning, setUserIdWarning] = useState<string | boolean>(false);
+
+
     const pathname = usePathname();
 
     const editable = (Object.keys(searchParams).length == 1 && searchParams.deviceId != null) || Object.keys(searchParams).length == 0;
@@ -50,6 +56,7 @@ const LendingEdit = ({ searchParams }: any) => {
             searchParams.userId ? setUserId(Number(searchParams.userId)) : null;
             searchParams.remarks ? setRemarks(searchParams.remarks) : null;
         } else {
+            setDeviceId(Number(searchParams.deviceId))
             setRentalStart(new Date().toISOString())
         }
 
@@ -61,6 +68,44 @@ const LendingEdit = ({ searchParams }: any) => {
         fetchAndSet(`${process.env.API_PATH}/api/User/available`, setAvailableUsers);
 
     }, [pathname])
+
+    const validateInputs = (onValidationSuccess: Function) => {
+
+        var somethingMissing = false;//入力に不備があった場合のフラグ
+
+        if (!rentalStart) {
+            setRentalStartWarning("必須項目です。");
+            somethingMissing = true;
+        } else {
+            setRentalStartWarning(false);
+        }
+
+        if (!rentalEnd) {
+            setRentalEndWarning("必須項目です。");
+            somethingMissing = true;
+        } else {
+            setRentalEndWarning(false);
+        }
+
+        console.log("userId", userId)
+        if (!userId || userId == -1) {
+            setUserIdWarning("必須項目です。");
+            somethingMissing = true;
+        } else {
+            setUserIdWarning(false);
+        }
+
+        if (!deviceId || deviceId == -1) {
+            setDeviceIdWarning("必須項目です。");
+            somethingMissing = true;
+        } else {
+            setDeviceIdWarning(false);
+        }
+
+        if (!somethingMissing) {
+            onValidationSuccess();
+        }
+    }
 
 
 
@@ -253,19 +298,19 @@ const LendingEdit = ({ searchParams }: any) => {
                     {backButton}
                 </div>
                 <div>
-                    <DatePicker className={style.input} placeholder="貸出日" onChange={setRentalStart} initialValue={rentalStart} label="貸出日" disabled={!editable} />
-                    <DatePicker className={style.input} placeholder="返却日" onChange={setRentalEnd} initialValue={rentalEnd} label="返却日" />
+                    <DatePicker className={style.input} placeholder="貸出日" onChange={setRentalStart} initialValue={rentalStart} label="貸出日" disabled={!editable} warning={rentalStartWarning} />
+                    <DatePicker className={style.input} placeholder="返却日" onChange={setRentalEnd} initialValue={rentalEnd} label="返却日" warning={rentalEndWarning} />
                 </div>
                 <div>
-                    <Selectable className={style.input} onChange={setDeviceId} initialValue={deviceId} options={deviceOptions} label={"貸出可能な機器"} noValueLabel="機器を選択してください" disabled={!editable} />
-                    <Selectable className={style.input} onChange={setUserId} initialValue={userId} options={userOptions} label={"貸出ユーザ"} noValueLabel="ユーザを選択してください" disabled={!editable} />
+                    <Selectable className={style.input} onChange={setDeviceId} initialValue={deviceId} options={deviceOptions} label={"貸出可能な機器"} noValueLabel="機器を選択してください" disabled={!editable} warning={deviceIdWarning} />
+                    <Selectable className={style.input} onChange={setUserId} initialValue={userId} options={userOptions} label={"貸出ユーザ"} noValueLabel="ユーザを選択してください" disabled={!editable} warning={userIdWarning} />
                 </div>
                 <div>
                     <TextArea className={style.textarea} placeholder="備考があれば入力してください。" onChange={setRemarks} initialValue={remarks} label="備考" />
                 </div>
                 <div className={style.buttonWrapper}>
                     {editable ?
-                        <Button className={style.onebutton} type={buttonStates.positive} text="貸出する" onClick={addNewLending} /> :
+                        <Button className={style.onebutton} type={buttonStates.positive} text="貸出する" onClick={() => validateInputs(addNewLending)} /> :
                         <>
                             <Button className={style.twobutton} type={buttonStates.warning} text="返却する" onClick={warnBeforeReturn} />
                             <Button className={style.twobutton} type={buttonStates.detail} text="変更を保存する" onClick={editLending} />

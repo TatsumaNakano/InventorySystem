@@ -230,14 +230,16 @@ namespace InventorySystem.Controllers
             var deviceExists = _deviceRepository.DeviceExist(targetDevice.DeviceId);
             if (!deviceExists || !ModelState.IsValid) BadRequest(ModelState);
 
+            
             Device deviceMapped = _mapper.Map<Device>(targetDevice);
 
-            if (!_deviceRepository.ActivateDevice(deviceMapped))
+
+            if (!_deviceRepository.EditDevice(deviceMapped))
             {
                 ModelState.AddModelError("", "予期せぬエラーが起こりました。");
                 return StatusCode(500, ModelState);
             }
-            return Ok("機器の有効化が完了しました。");
+            return Ok("機器の編集が完了しました。");
         }
 
     }

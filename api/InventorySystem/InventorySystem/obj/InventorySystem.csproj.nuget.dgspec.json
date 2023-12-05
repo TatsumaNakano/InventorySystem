@@ -40,6 +40,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Amazon.Lambda.AspNetCoreServer": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "Amazon.Lambda.AspNetCoreServer.Hosting": {
+              "target": "Package",
+              "version": "[1.6.1, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[12.0.1, )"

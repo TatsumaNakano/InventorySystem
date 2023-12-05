@@ -41,21 +41,24 @@ const UserData = () => {
                         <div className={`${style.nameLabel} ${commonStyle.borderBottom}`}>
 
                             {/* Name */}
-
-                            <h4 className={style.emoji}>
-                                <UserEmoji type={user.sex.id} />
-                            </h4>
-                            <h3 className={style.name}>
-                                <label>
-                                    <span className={style.kana}>{user.kanaLastName}</span>
-                                    <span className={style.kanji}>{user.lastName}</span>
-                                </label>
-                                <label>
-                                    <span className={style.kana}>{user.kanaFirstName}</span>
-                                    <span className={style.kanji}>{user.firstName}</span>
-                                </label>
-                            </h3>
-
+                            <div>
+                                <h4 className={style.emoji}>
+                                    <UserEmoji type={user.sex.id} />
+                                </h4>
+                                <h3 className={style.name}>
+                                    <label>
+                                        <span className={style.kana}>{user.kanaLastName}</span>
+                                        <span className={style.kanji}>{user.lastName}</span>
+                                    </label>
+                                    <label>
+                                        <span className={style.kana}>{user.kanaFirstName}</span>
+                                        <span className={style.kanji}>{user.firstName}</span>
+                                    </label>
+                                </h3>
+                            </div>
+                            <div>
+                                {user.deactivated == 1 ? <label className={style.deactivatedUser}>無効化されたユーザ</label> : null}
+                            </div>
                         </div>
                         <div className={`${commonStyle.borderBottom} ${commonStyle.marginBottomOneRem} ${commonStyle.paddingBottomOneRem} `}>{/* Detail Info */}
                             {/* <DetailPropertyInfo item={item} /> */}

@@ -8,6 +8,7 @@ const TextArea = ({ label, placeholder, onChange, initialValue, className }: any
             className={`${commonStyle.input} ${style.textarea}`}
             placeholder={placeholder}
             onChange={(e: any) => { onChange(e.target.value); }}
+            onBlur={(e: any) => { onChange(e.target.value); }}
             defaultValue={initialValue}
         ></textarea>
     </div>)

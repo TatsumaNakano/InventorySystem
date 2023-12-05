@@ -45,6 +45,8 @@ builder.Services.AddDbContext<InventorySystemContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

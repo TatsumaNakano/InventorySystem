@@ -61,20 +61,26 @@
     display: flex;
     margin-bottom: 1rem;
     padding-bottom: 0.618rem;
+    justify-content: space-between;
+    align-items: center;
 
-    h4.emoji {
-        margin: 0;
-        font-size: 2.617rem;
-        margin-right: 0.618rem;
-    }
+    div {
+        display: flex;
 
-    h3 {
-        margin: 0;
-        font-size: 1.618rem;
-    }
+        h4.emoji {
+            margin: 0;
+            font-size: 2.617rem;
+            margin-right: 0.618rem;
+        }
 
-    label {
-        font-size: 0.8rem;
+        h3 {
+            margin: 0;
+            font-size: 1.618rem;
+        }
+
+        label {
+            font-size: 0.8rem;
+        }
     }
 }
 
@@ -90,9 +96,8 @@
 
 .deactivated {
     background-color: var(--listitem-deactivated-background);
+}
 
-    >* {
-        opacity: 0.5;
-    }
-
+.deactivatedUser {
+    color: var(--warning-red);
 }

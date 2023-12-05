@@ -11,6 +11,13 @@
         list-style: none;
     }
 
+    >h5 {
+        font-size: 1.618rem;
+        margin: 4.235rem 0 1.618rem 1rem;
+        font-weight: 300;
+        color: var(--dark-gray);
+    }
+
     .deviceList {
         min-width: 100%;
         display: grid;

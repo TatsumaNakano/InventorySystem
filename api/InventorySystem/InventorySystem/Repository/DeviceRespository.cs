@@ -149,6 +149,11 @@ namespace InventorySystem.Repository
             return _context.Devices.Where(d => d.TempId == tempId).FirstOrDefault().DeviceId;
         }
 
+        public int GetIdByDeviceId(string deviceId)
+        {
+            return _context.Devices.Where(d => d.DeviceId == deviceId).FirstOrDefault().Id;
+        }
+
         public bool DeviceExist(int id)
         {
             return _context.Devices.Any(d => d.Id == id);

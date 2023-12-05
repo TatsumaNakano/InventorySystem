@@ -33,6 +33,7 @@ const DeviceEdit = ({ searchParams }: any) => {
     //////////////////////////////////////
     // Searchparamsを格納するためのState
     //////////////////////////////////////
+    const [id, setId] = useState(-1);
     const [deviceId, setDeviceId] = useState(-1);
     const [deviceTypeId, setDeviceTypeId] = useState(-1);
     const [leaseStartDate, setLeaseStartDate] = useState();
@@ -92,9 +93,11 @@ const DeviceEdit = ({ searchParams }: any) => {
     //////////////////////////////////////
     // 選択項目のリストを生成
     //////////////////////////////////////
+
     useEffect(() => {
-        // console.log("searchParams", searchParams) 
+
         if (Object.keys(searchParams).length > 0) {
+            setId(searchParams.id)
             setDeviceId(searchParams.deviceId);
             setDeviceTypeId(searchParams.deviceTypeId);
             setLeaseStartDate(searchParams.leaseStartDate);
@@ -222,7 +225,7 @@ const DeviceEdit = ({ searchParams }: any) => {
             cancelMsg: "キャンセル",
             state: messageStates.needDetailInput,
             onChange: (txt: any) => { detailText = txt; },
-            onConfirm: () => { deactivateDevice(onsuccess, onerror, isBroken, detailText + " " + date + (remarks != "" ? "\n\n" : "") + remarks); },
+            onConfirm: () => { deactivateDevice(onsuccess, onerror, isBroken, detailText + " " + date + (!remarks ? "\n\n" : "") + remarks); },
             onCancel: () => { setPopup(null); }
         });
     }
@@ -559,7 +562,7 @@ const DeviceEdit = ({ searchParams }: any) => {
 
     useEffect(() => {
         // console.log(deviceTypeId)
-        if (deviceTypeId != -1) {
+        if (deviceTypeId && deviceTypeId != -1) {
             const dt: any = deviceTypeOptions.filter((dt: any) => dt.id == deviceTypeId)[0];
             if (dt)
                 setIsComputer(dt.isComputer);
@@ -571,7 +574,7 @@ const DeviceEdit = ({ searchParams }: any) => {
 
     useEffect(() => {
         // console.log(deviceTypeId)
-        if (makerId != -1) {
+        if (makerId && makerId != -1) {
             hasAnyDeviceOnThisMaker(makerId)
                 .then((msg) => {
                     // console.log(msg);
@@ -582,8 +585,8 @@ const DeviceEdit = ({ searchParams }: any) => {
 
 
     useEffect(() => {
-        // console.log(deviceTypeId)
-        if (osId != -1) {
+        console.log(osId)
+        if (osId && osId != -1) {
             hasAnyDeviceOnThisOs(osId)
                 .then((msg) => {
                     console.log(msg);
@@ -595,7 +598,7 @@ const DeviceEdit = ({ searchParams }: any) => {
 
     useEffect(() => {
         // console.log(deviceTypeId)
-        if (placeId != -1) {
+        if (placeId && placeId != -1) {
             hasAnyDeviceOnThisPlace(placeId)
                 .then((msg) => {
                     // console.log(msg);
@@ -709,30 +712,36 @@ const DeviceEdit = ({ searchParams }: any) => {
     }
 
     const editDevice = () => {
+
+        const body = {
+            "id": id,
+            "deviceId": deviceId,
+            "deviceTypeId": Number(deviceTypeId),
+            "brokenFlag": Number(brokenFlag) ? 1 : 0,
+            "leaseStartDate": leaseStartDate,
+            "leaseEndDate": leaseEndDate,
+            "inventoryDate": inventoryDate,
+            "remarks": remarks,
+            "deleteFlag": Number(deleteFlag) ? 1 : 0,
+            "registrationDate": registrationDate,
+            "updateDate": new Date().toISOString(),
+            "placeId": Number(placeId),
+            "makerId": Number(makerId),
+            "osId": isComputer ? Number(osId) : null,
+            "memory": isComputer ? Number(memory) : null,
+            "capacity": isComputer ? Number(capacity) : null,
+            "hasGpu": isComputer ? Number(hasGpu) : null
+        }
+
+        console.log(body)
+
         fetch(`${process.env.API_PATH}/api/Device/edit`, {
             method: "PUT",
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
                 'Content-Type': 'application/json;charset=UTF-8',
             },
-            body: JSON.stringify({
-                "deviceId": deviceId,
-                "deviceTypeId": Number(deviceTypeId),
-                "brokenFlag": Number(brokenFlag),
-                "leaseStartDate": leaseStartDate,
-                "leaseEndDate": leaseEndDate,
-                "inventoryDate": inventoryDate,
-                "remarks": remarks,
-                "deleteFlag": Number(deleteFlag),
-                "registrationDate": registrationDate,
-                "updateDate": new Date().toISOString(),
-                "placeId": Number(placeId),
-                "makerId": Number(makerId),
-                "osId": isComputer ? Number(osId) : null,
-                "memory": isComputer ? Number(memory) : null,
-                "capacity": isComputer ? Number(capacity) : null,
-                "hasGpu": isComputer ? Number(hasGpu) : null
-            })
+            body: JSON.stringify(body)
         }).then((msg) => {
             // console.log(msg);
             push(`/devices/${deviceId}`);
@@ -976,6 +985,7 @@ const DeviceEdit = ({ searchParams }: any) => {
         const url = `${process.env.API_PATH}/api/Misc/hasAnyDeviceOnThisOs/${osId}`;
         const query = await fetch(url);
         const request = await query.text();
+        console.log("hasAnyDeviceOnThisOs", request)
         return JSON.parse(request);
     }
 

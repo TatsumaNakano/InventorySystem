@@ -4,9 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="8.1.1" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.6.1" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
@@ -16,6 +19,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <!--<DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="5.9.0" />-->
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="8.1.1"/>
   </ItemGroup>
 
 </Project>
