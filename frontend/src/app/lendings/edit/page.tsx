@@ -164,6 +164,7 @@ const LendingEdit = ({ searchParams }: any) => {
 
 
     const editLending = () => {
+        console.log(remarks)
 
         const body = {
             "id": id,

@@ -165,7 +165,7 @@ const DeviceItem = ({ item }: any) => {
                         <PropertyItem label="リース期日" data={formatDate(item.leaseEndDate)} />
                     </div>
                     <div>{/* 備考 */}
-                        <PropertyItem label="備考" data={item.remarks != null ? item.remarks.slice(0, 100) + "..." : ""} breakLine messageOnNull="記入なし" />
+                        <PropertyItem label="備考" data={item.remarks ? (item.length > 100 ? item.remarks.slice(0, 100) + "..." : item.remarks) : ""} breakLine messageOnNull="記入なし" />
                     </div>
 
                 </div>

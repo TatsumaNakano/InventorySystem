@@ -133,12 +133,15 @@ const LendingItem = () => {
                             <PropertyItem label="社員番号" data={lending.user.userId} />
                             <PropertyItem label="部署" data={lending.user.department.name} />
                             <PropertyItem label="役職" data={lending.user.position.name} />
-                            <PropertyItem label="備考" data={lending.remarks} breakLine messageOnNull="記入なし" />
+                            {/* <PropertyItem label="備考" data={lending.remarks} breakLine messageOnNull="記入なし" /> */}
 
                         </div>
 
                     </div>
                 </div >
+                <div className={style.remarks}>
+                    <PropertyItem label="備考" data={lending.remarks} breakLine messageOnNull={"記入なし"} />
+                </div>
                 <div className={style.buttonContainer}>
                     <Button className={style.button} type={buttonStates.warning} text="返却" noLinkMode onClick={warnBeforeReturn} />
                     <Button className={style.button} type={buttonStates.detail} text="編集" link={{

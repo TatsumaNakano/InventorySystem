@@ -323,7 +323,7 @@ const UserEdit = ({ searchParams }: any) => {
         /////////////////////////
         //権限の入力確認
         /////////////////////////
-        if (!isAdmin) {//入力なし
+        if (isAdmin == null) {//入力なし
             setIsAdminWarning("必須項目です。");
             console.log("isAdmin", isAdmin);
             somethingMissing = true;

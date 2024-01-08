@@ -308,53 +308,57 @@ const DeviceEdit = ({ searchParams }: any) => {
                             state: messageStates.needStringInput,
                             onConfirm: () => {
                                 // console.log(deviceTypeName, deviceTypePrefix)
-
-                                setPopup({
-                                    message: "新しい機器タイプの絵文字を入力してください。",
-                                    confirmMsg: "OK",
-                                    cancelMsg: "キャンセル",
-                                    state: messageStates.needEmojiInput,
-                                    onConfirm: () => {
-                                        setPopup({
-                                            message: "この機器はコンピュータですか？（メモリ、ストレージ、OS、GPUなどを搭載していますか？）",
-                                            confirmMsg: "搭載している",
-                                            cancelMsg: "搭載していない",
-                                            state: messageStates.needSelection,
-                                            onConfirm: () => {
-                                                if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
-                                                    // console.log("Should be called")
-                                                    addDeviceType(deviceTypeName, deviceTypePrefix, (deviceTypeEmoji), true)
-                                                }
-                                            },
-                                            onCancel: () => {
-                                                if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
-                                                    // console.log("Should be called")
-                                                    addDeviceType(deviceTypeName, deviceTypePrefix, (deviceTypeEmoji), false)
-                                                }
-                                            },
-                                            onChange: (emoji: any) => {
-                                                deviceTypeEmoji = emojiToBase64(emoji.emoji);
-                                            },
-                                        })
-                                    },
-                                    onCancel: () => {
-                                        setPopup(null)
-                                    },
-                                    onChange: (emoji: any) => {
-                                        // var newPopup = { ...popup };
-                                        // newPopup.selectedValue = emoji;
-                                        // setPopup(newPopup);
-                                        deviceTypeEmoji = emojiToBase64(emoji.emoji);
-                                    },
-                                })
+                                if (validPrefix) {
+                                    setPopup({
+                                        message: "新しい機器タイプの絵文字を入力してください。",
+                                        confirmMsg: "OK",
+                                        cancelMsg: "キャンセル",
+                                        state: messageStates.needEmojiInput,
+                                        onConfirm: () => {
+                                            if (deviceTypeEmoji) {
+                                                setPopup({
+                                                    message: "この機器はコンピュータですか？（メモリ、ストレージ、OS、GPUなどを搭載していますか？）",
+                                                    confirmMsg: "搭載している",
+                                                    cancelMsg: "搭載していない",
+                                                    state: messageStates.needSelection,
+                                                    onConfirm: () => {
+                                                        if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
+                                                            // console.log("Should be called")
+                                                            addDeviceType(deviceTypeName, deviceTypePrefix, deviceTypeEmoji, true)
+                                                        }
+                                                    },
+                                                    onCancel: () => {
+                                                        if (deviceTypeName && deviceTypePrefix && deviceTypeEmoji) {
+                                                            // console.log("Should be called")
+                                                            addDeviceType(deviceTypeName, deviceTypePrefix, deviceTypeEmoji, false)
+                                                        }
+                                                    },
+                                                    onChange: (emoji: any) => {
+                                                        deviceTypeEmoji = emojiToBase64(emoji.emoji);
+                                                    },
+                                                })
+                                            }
+                                        },
+                                        onCancel: () => {
+                                            setPopup(null)
+                                        },
+                                        onChange: (emoji: any) => {
+                                            // var newPopup = { ...popup };
+                                            // newPopup.selectedValue = emoji;
+                                            // setPopup(newPopup);
+                                            deviceTypeEmoji = emojiToBase64(emoji.emoji);
+                                        },
+                                    })
+                                }
                             },
                             onCancel: () => { setPopup(null); },
                             onChange: (text: string) => {
-
-                                if (deviceTypeOptions.filter((deviceType: any) => deviceType.devicePrefix == text).length == 0 && text) {
+                                console.log(text.length)
+                                if (deviceTypeOptions.filter((deviceType: any) => deviceType.devicePrefix == text).length == 0 && text && text.length == 2) {
                                     // console.log(deviceTypePrefix)
                                     deviceTypePrefix = text;
                                     validPrefix = true;
+                                    console.log("valid")
                                 } else {
                                     validPrefix = false;
                                 }

@@ -19,10 +19,8 @@ const BinarySelection = ({ func = () => { }, selectionA, selectionB, valA, valB,
     const [buttonASelected, setButtonASelected] = useState<boolean | null>(null);
 
     useEffect(() => {
-        setButtonASelected(initialValue != null ? initialValue == valA : null);
+        if (buttonASelected == null) setButtonASelected(initialValue != null ? initialValue == valA : null);
     }, [initialValue])
-
-    // console.log("Binary Selection ", initialValue)
 
     return (
         <div className={`${style.binaryinput} ${className} ${commonStyle.inputCommon}`}>
